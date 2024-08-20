@@ -1,0 +1,111 @@
+<section class="vh-100 d-flex align-items-center">
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center align-items-center ">
+            <form [formGroup]="Registrationform" #ngForm (ngSubmit)="OnSubmit()">
+                <div class="display-4 text-center my-3">Registration</div>
+                <div class="form-outline mb-4"><input type="text" class="form-control" name="Username"
+                        [(ngModel)]="Registration.Name" formControlName="name" placeholder="Name">
+                    <div *ngIf="Registrationform.controls['name'].invalid && (Registrationform.controls['name'].dirty || Registrationform.controls['name'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="Registrationform.controls['name'].errors?.['required']">name is required.</div>
+                        <div *ngIf="Registrationform.controls['name'].errors?.['minlength']">name must be atleast 4
+                            characters long.</div>
+                        <div *ngIf="Registrationform.controls['name'].errors?.['maxlength']">name should not exceed 30
+                            characters.</div>
+                        <div
+                            *ngIf="Registrationform.controls['name'].invalid || Registrationform.controls['name'].errors?.['maxlength']">
+                            Please enter a valid name</div>
+                    </div>
+                </div>
+                <div class="form-outline mb-4"><input type="text" class="form-control" name="Fullname"
+                        [(ngModel)]="Registration.FullName" formControlName="fullName" placeholder="FullName">
+                    <div *ngIf="Registrationform.controls['fullName'].invalid && (Registrationform.controls['fullName'].dirty || Registrationform.controls['fullName'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="Registrationform.controls['fullName'].errors?.['required']">FullName is required.
+                        </div>
+                        <div *ngIf="Registrationform.controls['fullName'].errors?.['minlength']">FullName must be
+                            atleast 4
+                            characters long.</div>
+                        <div *ngIf="Registrationform.controls['fullName'].errors?.['maxlength']">FullName should not
+                            exceed 30
+                            characters.</div>
+                        <div
+                            *ngIf="Registrationform.controls['fullName'].invalid || Registrationform.controls['fullName'].errors?.['maxlength']">
+                            Please enter a valid FullName/div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-outline mb-4"><input type="text" class="form-control" name="email"
+                        [(ngModel)]="Registration.Email" formControlName="email" placeholder="eg : abcd@gmail.com">
+                    <div *ngIf="Registrationform.controls['email'].invalid && (Registrationform.controls['email'].dirty || Registrationform.controls['email'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="Registrationform.controls['email'].errors?.['required']">Email is required.
+                        </div>
+                        <div *ngIf="Registrationform.controls['email'].errors?.['minlength']">Email must be atleast
+                            4
+                            characters long.</div>
+                        <div *ngIf="Registrationform.controls['email'].errors?.['maxlength']">Email should not
+                            exceed 30
+                            characters.</div>
+                        <div
+                            *ngIf="Registrationform.controls['email'].invalid || Registrationform.controls['email'].errors?.['maxlength']">
+                            Please enter a valid email</div>
+                    </div>
+                </div>
+
+                <div class="form-outline mb-3"><input type="password" class="form-control" name="Password"
+                        [(ngModel)]="Registration.Password" formControlName="password" placeholder="eg : John1234">
+                    <div *ngIf="Registrationform.controls['password'].invalid && (Registrationform.controls['password'].dirty || Registrationform.controls['password'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="Registrationform.controls['password'].errors?.['required']">Password is
+                            required.
+                        </div>
+                        <div *ngIf="Registrationform.controls['password'].errors?.['minlength']">Password must be at
+                            least 4 characters long.</div>
+                        <div *ngIf="Registrationform.controls['password'].errors?.['maxlength']">Password should not
+                            exceed 20 characters.</div>
+                        <div
+                            *ngIf="Registrationform.controls['password'].invalid || Registrationform.controls['password'].errors?.['maxlength']">
+                            Please enter a valid Password</div>
+                    </div>
+                </div>
+                <div class="form-outline mb-4"><input type="text" class="form-control" name="Address"
+                        [(ngModel)]="Registration.Address" formControlName="address" placeholder="Address">
+                    <div *ngIf="Registrationform.controls['address'].invalid && (Registrationform.controls['address'].dirty || Registrationform.controls['address'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="Registrationform.controls['address'].errors?.['required']">Address is required.
+                        </div>
+                        <div *ngIf="Registrationform.controls['address'].errors?.['minlength']">Address must be atleast
+                            4 character long</div>
+                        <div *ngIf="Registrationform.controls['address'].errors?.['maxlength']">Address should not
+                            exceed 1000 characters.</div>
+                        <div
+                            *ngIf="Registrationform.controls['address'].invalid || Registrationform.controls['address'].errors?.['maxlength']">
+                            Please enter a valid Address
+                        </div>
+                    </div>
+                </div>
+                <div class="form-outline mb-4"><input type="text" class="form-control" name="Pan"
+                        [(ngModel)]="Registration.Pan" formControlName="pan" placeholder="Pan Number">
+                    <div *ngIf="Registrationform.controls['pan'].invalid && (Registrationform.controls['pan'].dirty || Registrationform.controls['pan'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="Registrationform.controls['pan'].errors?.['required']">Pan is
+                            required.</div>
+                        <div *ngIf="Registrationform.controls['pan'].errors?.['minlength']">Pan must
+                            be atleast 4
+                            characters long.</div>
+                        <div *ngIf="Registrationform.controls['pan'].errors?.['maxlength']">Pan should
+                            not exceed 20
+                            characters.</div>
+                        <div
+                            *ngIf="Registrationform.controls['pan'].invalid || Registrationform.controls['pan'].errors?.['maxlength']">
+                            Please enter a valid Pan</div>
+                    </div>
+                </div>
+                <button class="btn btn-dark pe-10 px-10 mt-3 hover"
+                    [disabled]="Registrationform.invalid">Register</button>
+            </form>
+        </div>
+    </div>
+</section>

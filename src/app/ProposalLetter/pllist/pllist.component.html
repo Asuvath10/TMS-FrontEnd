@@ -1,0 +1,28 @@
+<div class="container-fluid">
+    <h2>Proposals</h2>
+    <div *ngIf="requestPL === true" class="pb-3">
+        <button class="btn btn-dark pe-10 px-10 mt-3 hover" (click)="OnclickRequest()">Request Proposal</button>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Assessment Year</th>
+                <th>Status</th>
+                <th>Created On</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let proposal of proposalList">
+                <td>{{ proposal.id }}</td>
+                <td>{{ proposal.assessmentYear }}</td>
+                <td>{{ proposal.plstatusId }}</td>
+                <td>{{proposal.createdOn | date: 'yyyy-MM-dd'}}</td>
+                <td>
+                    <a class="btn btn-dark btn-sm">View Details</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

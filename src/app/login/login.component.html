@@ -1,0 +1,42 @@
+<section class="vh-100 d-flex align-items-center">
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center ">
+            <form [formGroup]="loginform" #ngForm (ngSubmit)="OnSubmit()">
+                <div class="display-4 text-center my-3">Login</div>
+                <div class="form-outline mb-4"><input type="text" class="form-control" name="email" required
+                        minlength="3" [(ngModel)]="Login.Email" formControlName="email"
+                        placeholder="eg : abcd@gmail.com">
+                    <div *ngIf="loginform.controls['email'].invalid && (loginform.controls['email'].dirty || loginform.controls['email'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="loginform.controls['email'].errors?.['required']">Email is required.</div>
+                        <div *ngIf="loginform.controls['email'].errors?.['minlength']">Email must be atleast 4
+                            characters long.</div>
+                        <div *ngIf="loginform.controls['email'].errors?.['maxlength']">Email should not exceed 30
+                            characters.</div>
+                        <div
+                            *ngIf="loginform.controls['email'].invalid || loginform.controls['email'].errors?.['maxlength']">
+                            Please enter a valid email</div>
+                    </div>
+                </div>
+
+                <div class="form-outline mb-3"><input type="password" class="form-control" name="Password"
+                        [(ngModel)]="Login.password" formControlName="password" placeholder="eg : John1234">
+                    <div *ngIf="loginform.controls['password'].invalid && (loginform.controls['password'].dirty || loginform.controls['password'].touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="loginform.controls['password'].errors?.['required']">Password is required.
+                        </div>
+                        <div *ngIf="loginform.controls['password'].errors?.['minlength']">Password must be at
+                            least 4 characters long.</div>
+                        <div *ngIf="loginform.controls['password'].errors?.['maxlength']">Password should not
+                            exceed 30 characters.</div>
+                        <div
+                            *ngIf="loginform.controls['password'].invalid || loginform.controls['password'].errors?.['maxlength']">
+                            Please enter a valid Password</div>
+                    </div>
+                    <a routerLink="/Registration">NewUser?</a>
+                </div>
+                <button class="btn btn-dark pe-10 px-10 mt-3 hover" [disabled]="loginform.invalid">Login</button>
+            </form>
+        </div>
+    </div>
+</section>
