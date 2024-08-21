@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, NgModel, ReactiveFormsModule } from '@angular/forms';
+import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,20 +11,31 @@ import { RegistrationComponent } from './registration/registration.component';
 import { PLListComponent } from './ProposalLetter/pllist/pllist.component';
 import { AuthService } from './interceptor/auth.service';
 import { DatePipe } from '@angular/common';
-
+import { ViewPLComponent } from './ProposalLetter/view-pl/view-pl.component';
+export function tokenGetter() {
+  return localStorage.getItem("Token");
+}
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegistrationComponent,
-    PLListComponent
+    PLListComponent,
+    ViewPLComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ["localhost:5000"],
+        disallowedRoutes: []
+      }
+    })
   ],
   providers: [
     {

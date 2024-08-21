@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { HotToastService } from '@ngneat/hot-toast';
+import { LoginService } from 'src/app/login/login.service';
 
 @Component({
   selector: 'app-pllist',
@@ -11,11 +12,12 @@ export class PLListComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
+    private auth: LoginService,
     private toastService: HotToastService
   ) { }
 
   //Current user
-  currentuserId = 1;
+  currentuserId = this.auth.getId();
 
   //Proposal Model
   proposal: any = {
@@ -27,10 +29,10 @@ export class PLListComponent implements OnInit {
 
   //New PLRequest 
   newproposal: any = {
-    userId: 1,
+    userId: this.currentuserId,
     assessmentYear: "2024-2025",
     plstatusId: 1,
-    createdBy: 1
+    createdBy: this.currentuserId
   }
 
   //Get ProposalList for the current userId
@@ -42,6 +44,7 @@ export class PLListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProposals(this.currentuserId);
+    console.log(this.auth.getId(),"Current user id");
   }
 
   getProposals(userId: number) {
