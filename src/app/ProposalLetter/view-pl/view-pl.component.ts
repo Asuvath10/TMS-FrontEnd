@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ProposalLetterService } from '../proposal-letter.service';
 
 @Component({
   selector: 'app-view-pl',
@@ -6,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./view-pl.component.css']
 })
 export class ViewPLComponent implements OnInit {
-
-  constructor() { }
-
+  forms: any[]=[];
+  SelectedForm: any;
+  canEdit = false;
+  constructor(
+    private route:ActivatedRoute,
+    private PLservice:ProposalLetterService
+  ) { }
+  
   ngOnInit(): void {
   }
 

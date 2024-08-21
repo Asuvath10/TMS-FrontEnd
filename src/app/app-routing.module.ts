@@ -15,8 +15,8 @@ const routes: Routes = [
   { path: "", redirectTo: "Login", pathMatch: "full" },
   { path: "Login", component: LoginComponent },
   { path: "login", component: LoginComponent },
-  { path: "PLList", component: PLListComponent,canActivate:  [MasterGuard], data: { guard: [ReviewerGuard, UserGuard, AdminGuard,PreparerGuard] } },
-  { path: "ViewPL", component: ViewPLComponent, canActivate: [PreparerGuard] },
+  { path: "PLList", component: PLListComponent, canActivate: [MasterGuard], data: { guard: [ReviewerGuard, UserGuard, AdminGuard, PreparerGuard] } },
+  { path: "ViewPL", component: ViewPLComponent },
   { path: "Registration", component: RegistrationComponent }
 ];
 

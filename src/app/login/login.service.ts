@@ -35,7 +35,6 @@ export class LoginService {
 
   getRole() {
     if (this.getToken() != undefined) {
-      console.log(this.DecodedToken.Role);
       return this.DecodedToken.Role;
     } else {
       return '';

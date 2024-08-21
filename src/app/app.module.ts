@@ -9,9 +9,9 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { PLListComponent } from './ProposalLetter/pllist/pllist.component';
-import { AuthService } from './interceptor/auth.service';
 import { DatePipe } from '@angular/common';
 import { ViewPLComponent } from './ProposalLetter/view-pl/view-pl.component';
+import { AuthService } from './login/auth.service';
 export function tokenGetter() {
   return localStorage.getItem("Token");
 }
@@ -32,7 +32,7 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: ["localhost:5000"],
+        allowedDomains: ["localhost:5004"],
         disallowedRoutes: []
       }
     })
