@@ -1,0 +1,41 @@
+<div class="container">
+    <div>
+        <p>{{ userDetails.fullName }}</p>
+        <p>Email: {{ userDetails.email }}</p>
+        <p>Role: {{ userDetails.role.roleName }}</p>
+    </div>
+
+    <div class="content-wrapper">
+        <!-- Sidebar for form names and add new form -->
+        <div class="sidebar pe-4 pb-3" id="sidebar">
+            <ul>
+                <li *ngFor="let form of forms" (click)="selectForm(form.id)">
+                    {{ form.name }}
+                </li>
+                <!-- <li (click)="addForm()">+ Add New Form</li> -->
+            </ul>
+        </div>
+
+        <!-- Main content area for form content -->
+        <div class="main-content" *ngIf="selectedform">
+            <h3>{{ selectedform.name }}</h3>
+            <ckeditor [(ngModel)]="selectedform.content" [disabled]="!canEdit"></ckeditor>
+            <button *ngIf="canEdit" (click)="saveContent()">Save</button>
+        </div>
+
+        <!-- E-sign import for approver -->
+        <div *ngIf="canESign">
+            <h4>Approve with E-signature</h4>
+            <!-- <input type="file" (change)="uploadESign($event)" /> -->
+            <button (click)="approveProposalLetter()">Approve</button>
+        </div>
+    </div>
+</div>
+
+<div>
+    <button *ngIf="canEdit()" (click)="editProposalLetter()">Edit Proposal Letter</button>
+    <button *ngIf="canSendBack()" (click)="sendBackToPreparer()">Send Back for Correction</button>
+    <button *ngIf="canSendToApprover()" (click)="sendToApprover()">Send to Approver</button>
+    <button *ngIf="canApprove()" (click)="approveProposalLetter()">Approve Proposal Letter</button>
+    <!-- <button *ngIf="canExport()" (click)="exportDocument()">Export as PDF</button> -->
+</div>

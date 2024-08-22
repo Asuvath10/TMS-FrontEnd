@@ -20,6 +20,8 @@ export class PLListComponent implements OnInit {
 
   //Current user
   currentuserId = this.Login.getId();
+  //Current role
+  userrole=this.Login.getRoleId();
 
   //Proposal Model
   proposal: any = {
@@ -40,7 +42,8 @@ export class PLListComponent implements OnInit {
   //Get ProposalList for the current userId
   proposalList: any = [];
 
-
+  //variable for expost pdf
+  IsApproved: boolean = false;
   //Variable for Request PL for current assessment year 
   requestPL: boolean = true;
 
@@ -78,7 +81,7 @@ export class PLListComponent implements OnInit {
         this.toastService.success('Proposal Letter request sent successfully');
 
         setTimeout(() => {
-          window.location.replace('');
+          window.location.replace('/PLList');
         }, 500);
       },
       error: (err: any) => {

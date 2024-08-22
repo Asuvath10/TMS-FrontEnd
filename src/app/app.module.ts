@@ -12,6 +12,10 @@ import { PLListComponent } from './ProposalLetter/pllist/pllist.component';
 import { DatePipe } from '@angular/common';
 import { ViewPLComponent } from './ProposalLetter/view-pl/view-pl.component';
 import { AuthService } from './login/auth.service';
+import { PLCRUDComponent } from './ProposalLetter/plcrud/plcrud.component';
+import { UserListComponent } from './User/user-list/user-list.component';
+import { AssignUserComponent } from './User/assign-user/assign-user.component';
+import { PLRequestListComponent } from './ProposalLetter/plrequest-list/plrequest-list.component';
 export function tokenGetter() {
   return localStorage.getItem("Token");
 }
@@ -21,7 +25,11 @@ export function tokenGetter() {
     LoginComponent,
     RegistrationComponent,
     PLListComponent,
-    ViewPLComponent
+    ViewPLComponent,
+    PLCRUDComponent,
+    UserListComponent,
+    AssignUserComponent,
+    PLRequestListComponent
   ],
   imports: [
     BrowserModule,

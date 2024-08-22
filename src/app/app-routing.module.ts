@@ -10,6 +10,10 @@ import { UserGuard } from './login/Guards/User.guard';
 import { ReviewerGuard } from './login/Guards/reviewer.guard';
 import { ViewPLComponent } from './ProposalLetter/view-pl/view-pl.component';
 import { AdminGuard } from './login/Guards/admin.guard';
+import { PLCRUDComponent } from './ProposalLetter/plcrud/plcrud.component';
+import { UserListComponent } from './User/user-list/user-list.component';
+import { PLRequestListComponent } from './ProposalLetter/plrequest-list/plrequest-list.component';
+import { AssignUserComponent } from './User/assign-user/assign-user.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "Login", pathMatch: "full" },
@@ -17,7 +21,12 @@ const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "PLList", component: PLListComponent, canActivate: [MasterGuard], data: { guard: [ReviewerGuard, UserGuard, AdminGuard, PreparerGuard] } },
   { path: "ViewPL", component: ViewPLComponent },
-  { path: "Registration", component: RegistrationComponent }
+  { path: "PLList/:PLId/PLcrud", component: PLCRUDComponent },
+  { path: "Registration", component: RegistrationComponent },
+  { path: "UserList", component: UserListComponent },
+  { path: "PLrequest", component: PLRequestListComponent },
+  { path: "PLrequest/:PLId/AssignUser", component: AssignUserComponent },
+
 ];
 
 @NgModule({

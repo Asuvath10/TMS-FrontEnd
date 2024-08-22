@@ -18,7 +18,7 @@ export class LoginService {
   public IsApprover = false;
 
   CheckUsers() {
-    this.IsAdmin = (this.getRole() == 'Admin');
+    this.IsAdmin = (this.getRole() == 'admin');
 
     this.IsUser = (this.getRole() == 'User')
 

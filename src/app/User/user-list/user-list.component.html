@@ -1,0 +1,21 @@
+<div class="container-fluid">
+    <h2>Users</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Pan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of UserList">
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.roleId }}</td>
+                <td>{{user.pan}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

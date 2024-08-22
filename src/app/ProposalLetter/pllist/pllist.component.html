@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <h2>Proposals</h2>
-    <div *ngIf="requestPL === true" class="pb-3">
-        <button class="btn btn-dark pe-10 px-10 mt-3 hover" (click)="OnclickRequest()">Request Proposal</button>
+    <div *ngIf="requestPL === true && userrole === 2" class="pb-3">
+        <button class="btn btn-info btn-sm hover" (click)="OnclickRequest()">Request Proposal</button>
     </div>
     <table class="table table-striped">
         <thead>
@@ -10,6 +10,7 @@
                 <th>Assessment Year</th>
                 <th>Status</th>
                 <th>Created On</th>
+                <th></th>
                 <th></th>
             </tr>
         </thead>
@@ -20,7 +21,10 @@
                 <td>{{ proposal.plstatusId }}</td>
                 <td>{{proposal.createdOn | date: 'yyyy-MM-dd'}}</td>
                 <td>
-                    <a class="btn btn-dark btn-sm" routerLink="/ViewPL">View Details</a>
+                    <a class="btn btn-info btn-sm" *ngIf="proposal.plstatusId === 'Approved'">Export PDF</a>
+                </td>
+                <td>
+                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/PLcrud">View Details</a>
                 </td>
             </tr>
         </tbody>

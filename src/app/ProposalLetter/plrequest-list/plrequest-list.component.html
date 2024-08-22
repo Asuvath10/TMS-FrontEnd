@@ -1,0 +1,23 @@
+<div class="container-fluid">
+    <h2>Users</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>UserName</th>
+                <th>PLId</th>
+                <th>assessmentYear</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let proposal of PLList">
+                <td>{{ proposal.userId }}</td>
+                <td>{{ proposal.id }}</td>
+                <td>{{ proposal.assessmentYear }}</td>
+                <td>
+                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/AssignUser">Assign Users</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
