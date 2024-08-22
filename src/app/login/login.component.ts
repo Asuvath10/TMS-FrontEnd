@@ -48,8 +48,9 @@ export class LoginComponent {
 
         setTimeout(() => {
           //Admin flow
-          if (this.loginService.getRoleId() === 1) {
+          if (this.loginService.getRole() === 'admin') {
             window.location.replace('/PLrequest');
+            console.log(this.loginService.getRole());
           }
           else {
             window.location.replace('/PLList');

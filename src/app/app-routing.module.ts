@@ -23,8 +23,8 @@ const routes: Routes = [
   { path: "ViewPL", component: ViewPLComponent },
   { path: "PLList/:PLId/PLcrud", component: PLCRUDComponent },
   { path: "Registration", component: RegistrationComponent },
-  { path: "UserList", component: UserListComponent },
-  { path: "PLrequest", component: PLRequestListComponent },
+  { path: "UserList", component: UserListComponent, canActivate: [AdminGuard] },
+  { path: "PLrequest", component: PLRequestListComponent, canActivate: [AdminGuard] },
   { path: "PLrequest/:PLId/AssignUser", component: AssignUserComponent },
 
 ];
