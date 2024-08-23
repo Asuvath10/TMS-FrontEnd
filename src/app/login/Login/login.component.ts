@@ -44,7 +44,6 @@ export class LoginComponent {
 
         this.toastService.success('Loggedin Successfully');
         setTimeout(() => {
-          //Admin flow
           window.location.replace('/PLList');
         }, 500);
       },

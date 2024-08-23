@@ -62,7 +62,7 @@ export class RegistrationComponent {
 
   //On Button click event
   OnSubmit() {
-    this.http.post('http://localhost:5000/api/Registration', this.Registration).subscribe({
+    this.http.post('http://localhost:5004/api/Registration', this.Registration).subscribe({
       next: (res: any) => {
         console.log(res);
 

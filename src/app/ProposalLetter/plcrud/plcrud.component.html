@@ -5,14 +5,12 @@
         <p>Role: {{ userDetails.role?.roleName }}</p>
     </div>
 
-    <div class="content-wrapper">
-        <!-- Sidebar for form names and add new form -->
-        <div class="sidebar pe-4 pb-3" id="sidebar">
+    <div>
+        <div>
             <ul>
                 <li *ngFor="let form of forms" (click)="selectForm(form.id)">
                     {{ form.name }}
                 </li>
-                <!-- <li (click)="addForm()">+ Add New Form</li> -->
             </ul>
         </div>
 

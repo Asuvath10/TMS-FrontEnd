@@ -51,7 +51,10 @@ export class ProposalLetterService {
   DeleteForm(id: number): Observable<any> {
     return this.http.delete<any>(baseurl + `ProposalLetter/DeleteForm/${id}`);
   }
-  getPLStatusbyId(id: number) {
-    return this.http.get(baseurl + `ProposalLetter/PLStatus/${id}`);
+  getPLStatusbyId(id: number): Observable<any> {
+    return this.http.get<any>(baseurl + `ProposalLetter/PLStatus/${id}`);
+  }
+  ExportPDF(PLid: number): Observable<Blob> {
+    return this.http.get<Blob>(baseurl + `Document/GeneratePdf?plId=${PLid}`);
   }
 }

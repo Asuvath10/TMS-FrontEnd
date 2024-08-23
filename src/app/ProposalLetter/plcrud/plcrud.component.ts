@@ -132,4 +132,7 @@ export class PLCRUDComponent implements OnInit {
       this.loadProposalLetter();
     });
   }
+  UploadEsign(){
+    
+  }
 }

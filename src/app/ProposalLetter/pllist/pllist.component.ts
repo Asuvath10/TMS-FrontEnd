@@ -24,6 +24,8 @@ export class PLListComponent implements OnInit {
   currentuserId = this.Login.getId();
   //Current role
   userrole = this.Login.getRoleId();
+  userName = this.Login.getFullname();
+
 
   //Proposal Model
   proposal: any = {
@@ -51,7 +53,7 @@ export class PLListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProposals(this.currentuserId);
-    console.log(this.userrole);
+    console.log(this.userrole, "This is user role");
   }
 
   getProposals(userId: number) {
@@ -100,7 +102,16 @@ export class PLListComponent implements OnInit {
       }
     });
   }
-
+  ExportPDF(PLId: number) {
+    this.PLService.ExportPDF(PLId).subscribe((res: Blob) => {
+      const url = window.URL.createObjectURL(res);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = `Document.pdf`;
+      anchor.click();
+      window.URL.revokeObjectURL(url);
+    });
+  }
   LogOut() {
     localStorage.clear();
     this.router.navigate(['/Login']);

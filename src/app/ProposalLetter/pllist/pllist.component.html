@@ -1,12 +1,12 @@
 <div class="container-fluid">
     <h2>Proposals</h2>
-    <div *ngIf="requestPL === true && userrole === 2" class="pb-3">
+    <div *ngIf="requestPL === true && userrole === '2'" class="pb-3">
         <button class="btn btn-info btn-sm hover" (click)="OnclickRequest()">Request Proposal</button>
     </div>
-    <div *ngIf="userrole === 1" class="pb-3">
+    <div *ngIf="userrole === '1'" class="pb-3">
         <a class="btn btn-info btn-sm hover" routerLink="/PLrequest">PL Requests</a>
     </div>
-    <div class="nav-item"><a *ngIf="Login.IsloggedIn" class="btn btn-dark" (click)="LogOut()"> LogOut</a></div>
+        <div class="nav-item"><a *ngIf="Login.IsloggedIn" class="btn btn-info justify-content-end" (click)="LogOut()"> LogOut</a></div>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -25,7 +25,7 @@
                 <td>{{ proposal.plstatusId }}</td>
                 <td>{{proposal.createdOn | date: 'yyyy-MM-dd'}}</td>
                 <td>
-                    <a class="btn btn-info btn-sm" *ngIf="proposal.plstatusId === 'Approved'">Export PDF</a>
+                    <a class="btn btn-info btn-sm" *ngIf="proposal.plstatusId === 'Approved'" (click)="ExportPDF(proposal.id)">Export PDF</a>
                 </td>
                 <td>
                     <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/PLcrud">View Details</a>

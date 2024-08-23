@@ -1,27 +1,33 @@
-<div class="container-fluid">
+<div class="container-fluid ">
     <h3>AssignUsers for ProposalLetter</h3>
-    <div>
+    <div class="row">
+        <label>UserName :</label>
         <p>{{ userDetails.fullName }}</p>
     </div>
-    <form [formGroup]="PLform" (ngSubmit)="OnSubmit()">
-        <div class="form-floating mb-4">
-            <select class="form-select" area-label="default select example" name="preparerId" [(ngModel)]="reviewerId">
-                <option *ngFor="let item of preparerList" value="{{item.id}}">{{item.fullName}}</option>
-            </select>
-            <label for="floatingText">Preparer</label>
-        </div>
-        <div class="form-floating mb-4">
-            <select class="form-select" area-label="default select example" name="reviewerId" [(ngModel)]="reviewerId">
-                <option *ngFor="let item of reviewerList" value="{{item.id}}">{{item.fullName}}</option>
-            </select>
-            <label for="floatingText">Reviewer</label>
-        </div>
-        <div class="form-floating mb-4">
-            <select class="form-select" area-label="default select example" name="reviewerId" [(ngModel)]="reviewerId">
-                <option *ngFor="let item of reviewerList" value="{{item.id}}">{{item.fullName}}</option>
-            </select>
-            <label for="floatingText">Reviewer</label>
-        </div>
-        <button [disabled]="!PLform.valid" type="submit" class="btn btn-info">Assign</button>
-    </form>
+    <div class="d-flex justify-content-center align-items-center">
+        <form [formGroup]="PLform" (ngSubmit)="OnSubmit()">
+            <div class="mb-4">
+                <select class="" area-label="default select example" name="preparerId"
+                    [(ngModel)]="preparerId">
+                    <option *ngFor="let item of preparerList" value="{{item.id}}">{{item.fullName}}</option>
+                </select>
+                <label for="preparerId">Preparer</label>
+            </div>
+            <div class="mb-4">
+                <select class="form-select" area-label="default select example" name="reviewerId"
+                    [(ngModel)]="reviewerId">
+                    <option *ngFor="let item of reviewerList" value="{{item.id}}">{{item.fullName}}</option>
+                </select>
+                <label for="reviewerId">Reviewer</label>
+            </div>
+            <div class="">
+                <select class="form-select" area-label="default select example" name="ApproverId"
+                    [(ngModel)]="ApproverId">
+                    <option *ngFor="let item of ApproverList" value="{{item.id}}">{{item.fullName}}</option>
+                </select>
+                <label for="ApproverId">Approver</label>
+            </div>
+            <button [disabled]="!PLform.valid" type="submit" class="btn btn-info">Assign</button>
+        </form>
+    </div>
 </div>
