@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './login/Login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { PLListComponent } from './ProposalLetter/pllist/pllist.component';
 import { MasterGuard } from './login/Guards/master.guard';
@@ -16,7 +16,7 @@ import { PLRequestListComponent } from './ProposalLetter/plrequest-list/plreques
 import { AssignUserComponent } from './User/assign-user/assign-user.component';
 
 const routes: Routes = [
-  { path: "", redirectTo: "Login", pathMatch: "full" },
+  { path: "", redirectTo: "", pathMatch: "full" },
   { path: "Login", component: LoginComponent },
   { path: "login", component: LoginComponent },
   { path: "PLList", component: PLListComponent, canActivate: [MasterGuard], data: { guard: [ReviewerGuard, UserGuard, AdminGuard, PreparerGuard] } },

@@ -15,6 +15,9 @@ export class ProposalLetterService {
   getPLById(id: number) {
     return this.http.get(baseurl + `ProposalLetter/${id}`);
   }
+  getAllPL() {
+    return this.http.get(baseurl + `ProposalLetter`);
+  }
   getAllPLByUserId(userid: number): Observable<any> {
     return this.http.get<any>(baseurl + `ProposalLetter/GetallPLByUserId?userid=${userid}`);
   }

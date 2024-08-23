@@ -6,7 +6,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './login/Login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { PLListComponent } from './ProposalLetter/pllist/pllist.component';
 import { DatePipe } from '@angular/common';

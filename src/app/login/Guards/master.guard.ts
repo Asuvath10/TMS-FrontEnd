@@ -4,6 +4,7 @@ import {
   CanActivate,
   RouterStateSnapshot,
   UrlTree,
+  Router
 } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Observable } from 'rxjs';
@@ -13,7 +14,7 @@ import { LoginService } from '../login.service';
   providedIn: 'root',
 })
 export class MasterGuard implements CanActivate {
-  constructor(private auth: LoginService, private toast: HotToastService) {}
+  constructor(private auth: LoginService, private toast: HotToastService, private router: Router) { }
 
   private route!: ActivatedRouteSnapshot;
   private state!: RouterStateSnapshot;
@@ -32,7 +33,7 @@ export class MasterGuard implements CanActivate {
     this.guards = this.route.data['guard'];
 
     if (this.guards != null) {
-      for (var i = 0; i < this.guards.length; i++) {
+      for (let i = 0; i < this.guards.length; i++) {
         let guard = new this.guards[i](this.auth);
         this.result = guard.canActivate(this.route, this.state);
         if (this.result) break;
@@ -45,7 +46,7 @@ export class MasterGuard implements CanActivate {
     } else {
       this.toast.warning("You're Unauthorized");
       setTimeout(() => {
-        window.location.replace('/Login');
+        this.router.navigate(['/Login']);
       }, 500);
       return false;
     }

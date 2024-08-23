@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProposalLetterService } from 'src/app/ProposalLetter/proposal-letter.service';
 import { UserService } from '../user.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-assign-user',
@@ -21,12 +22,22 @@ export class AssignUserComponent implements OnInit {
   proposalLetter: any = [];
   //Get user details
   userDetails: any = [];
+  preparerId = 0;
+  reviewerId = 0;
+  ApproverId = 0;
   //Get all reviewer
   reviewerList: any = [];
   //Get all Preparer
   preparerList: any = [];
   //Get all Approver
   ApproverList: any = [];
+
+  //UserAssigning for PL form
+  PLform = new FormGroup({
+    Preparer: new FormControl(['', Validators.required]),
+    Reviewer: new FormControl(['']),
+    Approver: new FormControl(['', Validators.required])
+  });
 
   ngOnInit(): void {
     this.plId = this.route.snapshot.params['PLId'];
@@ -63,5 +74,8 @@ export class AssignUserComponent implements OnInit {
     this.userService.getAllUsersByRoleId(5).subscribe(approver => {
       this.ApproverList = approver;
     });
+  }
+  OnSubmit(){
+    
   }
 }

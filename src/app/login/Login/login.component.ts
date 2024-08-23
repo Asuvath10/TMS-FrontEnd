@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HotToastService } from '@ngneat/hot-toast';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
-import { LoginService } from './login.service';
+import { LoginService } from '../login.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -11,7 +11,6 @@ import { LoginService } from './login.service';
 export class LoginComponent {
   constructor(
     private toastService: HotToastService,
-    private loginService: LoginService,
     private http: HttpClient
   ) { }
 
@@ -20,7 +19,6 @@ export class LoginComponent {
     Email: '',
     Password: '',
   };
-
   //Login forms for validation
   loginform = new FormGroup({
     email: new FormControl('', [
@@ -45,16 +43,9 @@ export class LoginComponent {
         localStorage.setItem('Token', res.token);
 
         this.toastService.success('Loggedin Successfully');
-
         setTimeout(() => {
           //Admin flow
-          if (this.loginService.getRole() === 'admin') {
-            window.location.replace('/PLrequest');
-            console.log(this.loginService.getRole());
-          }
-          else {
-            window.location.replace('/PLList');
-          }
+          window.location.replace('/PLList');
         }, 500);
       },
 
