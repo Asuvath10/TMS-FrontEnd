@@ -1,14 +1,14 @@
 <div class="container">
 
 
-    <h3 class="text-black">ProposalLetter</h3>
+    <h2>ProposalLetter</h2>
 
-    <div class="row col-md-8">
-        <p class="col-md-4 px-4">Full Name: {{ userDetails?.fullName }}</p>
-        <p class="col-md-4 px-4">Email: {{ userDetails?.email }}</p>
+    <div class="row">
+        <p class="px-4">Full Name: {{ userDetails?.fullName }}</p>
+        <p> Role: {{ userDetails?.role?.roleName }}</p>
     </div>
     <div class="row">
-        <p> Role: {{ userDetails?.role?.roleName }}</p>
+        <p class="px-4">Email: {{ userDetails?.email }}</p>
         <p>Address: {{ userDetails?.address }}</p>
     </div>
     <div class="row">
@@ -18,7 +18,7 @@
     </div>
     <!-- form List -->
     <div *ngFor="let form of PLforms;let i = index">
-        <form [formGroup]="formGroupArray[i]" class="form">
+        <form [formGroup]="formGroupArray[i]" class="form pb-4">
             <mat-form-field class="form-content">
                 <mat-label>Form Name</mat-label>
                 <input matInput placeholder="Ex: Form 16 a" formControlName="name">
@@ -28,9 +28,9 @@
                 <mat-label>Form Content</mat-label>
                 <textarea matInput placeholder="Ex. The Form Details..." formControlName="content"></textarea>
             </mat-form-field>
-            <div class="row">
+            <div class="row pe-5">
                 <div class="px-4">
-                    <button class="btn btn-info" (click)="saveForm(i)">Save Form </button>
+                    <button class="btn btn-dark" (click)="saveForm(i)">Save Form </button>
                 </div>
                 <div class="px-4">
                     <button class="btn btn-danger" (click)="deleteForm(i)">delete Form </button>
@@ -38,8 +38,10 @@
             </div>
         </form>
     </div>
-    <div class="row">
-        <a (click)="addNewForm()">+ Add Form</a>
+    <div class="pb-3">
+        <a (click)="addNewForm()"><u>
+                + Add Form
+            </u></a>
     </div>
     <!-- E-sign import for approver -->
     <!-- <div *ngIf="canESign">

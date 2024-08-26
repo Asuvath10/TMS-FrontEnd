@@ -56,8 +56,10 @@ export class ProposalLetterService {
   CreateForm(data: any): Observable<any> {
     return this.http.post<any>(baseurl + 'ProposalLetter/CreateForm', data);
   }
-  updateForm(id: number, data: any): Observable<any> {
-    return this.http.put<any>(baseurl + `ProposalLetter/Updateform/${id}`, data);
+  updateForm(data: any): Observable<any> {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json; charset=utf-8');
+    return this.http.put<any>(baseurl + 'ProposalLetter/UpdateForm', data);
   }
   DeleteForm(id: number): Observable<any> {
     return this.http.delete<any>(baseurl + `ProposalLetter/DeleteForm/${id}`);

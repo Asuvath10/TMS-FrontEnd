@@ -18,7 +18,7 @@ export class PLCRUDComponent implements OnInit {
   userDetails: any;
   PLforms: any = [];
   forms: any = [];
-  formGroupArray: any[] = [];
+  formGroupArray: FormGroup[] = [];
   userRole: string = '';
   userId = 0;
   isEditing: boolean = false;
@@ -43,11 +43,7 @@ export class PLCRUDComponent implements OnInit {
     this.plId = this.route.snapshot.params['PLId'];
     this.loadProposalLetter();
     this.userRole = this.loginservice.getRole();
-    console.log(this.userRole);
     this.userId = this.loginservice.getId();
-    console.log(this.userId);
-    this.loadFormDetails();
-    this.initializeForms();
   }
 
   loadProposalLetter() {
@@ -62,11 +58,10 @@ export class PLCRUDComponent implements OnInit {
       else if (this.proposalLetter.plstatusId === 4 && this.userRole === 'Approver') {
         this.isApprover = true;
       }
-      console.log(this.proposalLetter, "This is pl");
       // this.forms = this.proposalLetter.forms || [];
       this.loadUserDetails();
       this.loadFormDetails();
-      console.log(this.forms, "onload");
+      console.log(this.PLforms, "onload");
     });
   }
 
@@ -81,12 +76,13 @@ export class PLCRUDComponent implements OnInit {
     //Fetch forms for the current pl
     this.plService.getallFormsByPLId(this.plId).subscribe((formdata: any) => {
       this.PLforms = formdata;
+      console.log(this.PLforms, "load forms")
+      this.initializeForms();
     });
   }
   initializeForms() {
-    console.log(this.forms, "init");
     this.forms = this.PLforms;
-    this.forms.forEach((form: any, index: any) => {
+    this.forms.forEach((form: any) => {
       const formGroup = this.fb.group({
         id: [form.id],
         name: [form.name],
@@ -98,28 +94,36 @@ export class PLCRUDComponent implements OnInit {
     });
   }
   saveForm(index: number) {
-    console.log("inside save form")
-    var formData = this.formGroupArray[index];
-    console.log(this.formGroupArray, "Form details");
-    formData.plid = this.plId;
-    console.log(formData, "This the form create data");
-    this.plService.CreateForm(formData).subscribe((res: any) => {
-      console.log(this.forms, "After form create");
+    var formData: any = this.formGroupArray[index].value;
+    this.plService.updateForm(formData).subscribe({
+      next: (res: any) => {
+        this.toastService.success("Form saved successfully");
+        this.formGroupArray[index].value.id = res;
+        setTimeout(() => {
+          window.location.replace(`/PLList/${this.plId}/PLcrud`);
+        }, 300);
+      },
+      error: (err) => {
+        console.log(err);
+      }
     });
   }
   deleteForm(index: number) {
     const formData = this.formGroupArray[index].value;
-    formData.plid = this.plId;
-    this.plService.DeleteForm(formData).subscribe((res: any) => {
-      this.loadFormDetails();
-      console.log(this.forms, "After form create");
+    this.plService.DeleteForm(formData.id).subscribe((res: any) => {
+      this.toastService.success("Form Deleted successfully");
+      setTimeout(() => {
+        window.location.replace(`/PLList/${this.plId}/PLcrud`);
+      }, 300);
     });
   }
   addNewForm() {
-    this.forms.push({ name: '', cntent: '' });
+    this.forms.push({ name: '', content: '' });
     this.formGroupArray.push(this.fb.group({
+      id: [0],
       name: [''],
-      content: ['']
+      content: [''],
+      plid: [this.plId]
     }));
   }
 
