@@ -5,29 +5,28 @@
         <p>{{ userDetails.fullName }}</p>
     </div>
     <div class="d-flex justify-content-center align-items-center">
-        <form [formGroup]="PLform" (ngSubmit)="OnSubmit()">
+        <form>
             <div class="mb-4">
-                <select class="" area-label="default select example" name="preparerId"
-                    [(ngModel)]="preparerId">
+                <select class="form-select" area-label="preparerId" name="preparerId" [(ngModel)]="PL.preparerId">
                     <option *ngFor="let item of preparerList" value="{{item.id}}">{{item.fullName}}</option>
                 </select>
                 <label for="preparerId">Preparer</label>
             </div>
             <div class="mb-4">
                 <select class="form-select" area-label="default select example" name="reviewerId"
-                    [(ngModel)]="reviewerId">
+                    [(ngModel)]="PL.reviewerId">
                     <option *ngFor="let item of reviewerList" value="{{item.id}}">{{item.fullName}}</option>
                 </select>
                 <label for="reviewerId">Reviewer</label>
             </div>
             <div class="">
                 <select class="form-select" area-label="default select example" name="ApproverId"
-                    [(ngModel)]="ApproverId">
+                    [(ngModel)]="PL.approverId">
                     <option *ngFor="let item of ApproverList" value="{{item.id}}">{{item.fullName}}</option>
                 </select>
                 <label for="ApproverId">Approver</label>
             </div>
-            <button [disabled]="!PLform.valid" type="submit" class="btn btn-info">Assign</button>
+            <button class="btn btn-info" (click)="OnSubmit()">Assign </button>
         </form>
     </div>
 </div>

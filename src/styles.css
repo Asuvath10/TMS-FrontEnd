@@ -1,0 +1,14 @@
+html,
+body {
+  height: 100%;
+}
+
+.form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.form-content {
+  width: 100%;
+}

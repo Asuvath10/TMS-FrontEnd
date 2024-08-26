@@ -1,39 +1,73 @@
 <div class="container">
-    <div>
-        <p>{{ userDetails?.fullName }}</p>
-        <p>Email: {{ userDetails?.email }}</p>
-        <p>Role: {{ userDetails.role?.roleName }}</p>
+
+
+    <h3 class="text-black">ProposalLetter</h3>
+
+    <div class="row col-md-8">
+        <p class="col-md-4 px-4">Full Name: {{ userDetails?.fullName }}</p>
+        <p class="col-md-4 px-4">Email: {{ userDetails?.email }}</p>
     </div>
+    <div class="row">
+        <p> Role: {{ userDetails?.role?.roleName }}</p>
+        <p>Address: {{ userDetails?.address }}</p>
+    </div>
+    <div class="row">
 
-    <div>
-        <div>
-            <ul>
-                <li *ngFor="let form of forms" (click)="selectForm(form.id)">
-                    {{ form.name }}
-                </li>
-            </ul>
-        </div>
+        <p class="px-4">Pan: {{ userDetails?.pan }}</p>
+        <p>assessmentYear: {{ proposalLetter?.assessmentYear }}</p>
+    </div>
+    <!-- form List -->
+    <div *ngFor="let form of PLforms;let i = index">
+        <form [formGroup]="formGroupArray[i]" class="form">
+            <mat-form-field class="form-content">
+                <mat-label>Form Name</mat-label>
+                <input matInput placeholder="Ex: Form 16 a" formControlName="name">
+            </mat-form-field>
 
-        <!-- Main content area for form content -->
-        <div class="main-content" *ngIf="selectedform">
-            <h3>{{ selectedform.name }}</h3>
-            <ckeditor [(ngModel)]="selectedform.content" [disabled]="!canEdit"></ckeditor>
-            <button *ngIf="canEdit" (click)="saveContent()">Save</button>
-        </div>
-
-        <!-- E-sign import for approver -->
-        <div *ngIf="canESign">
+            <mat-form-field class="form-content">
+                <mat-label>Form Content</mat-label>
+                <textarea matInput placeholder="Ex. The Form Details..." formControlName="content"></textarea>
+            </mat-form-field>
+            <div class="row">
+                <div class="px-4">
+                    <button class="btn btn-info" (click)="saveForm(i)">Save Form </button>
+                </div>
+                <div class="px-4">
+                    <button class="btn btn-danger" (click)="deleteForm(i)">delete Form </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <a (click)="addNewForm()">+ Add Form</a>
+    </div>
+    <!-- E-sign import for approver -->
+    <!-- <div *ngIf="canESign">
             <h4>Approve with E-signature</h4>
-            <!-- <input type="file" (change)="uploadESign($event)" /> -->
+            <input type="file" (change)="uploadESign($event)" />
             <button (click)="approveProposalLetter()">Approve</button>
+        </div> -->
+
+    <div>
+        <div class="row">
+            <div class="px-4" *ngIf="isPreparer">
+                <button class="btn btn-info" (click)="SendtoReviewer()">Send to Reviewer</button>
+            </div>
+            <div class="row" *ngIf="isReviewer">
+                <div class="px-4">
+                    <button class="btn btn-info" (click)="sendBackToPreparer()">Send Back to Preparer</button>
+                </div>
+                <div class="px-4">
+                    <button class="btn btn-info" (click)="SendtoApprover()">Send to Approver</button>
+                </div>
+            </div>
+            <div class="row " *ngIf="isApprover">
+                <button class="btn btn-info" (click)="sendBackToReviewer()">Send Back to Reviewer</button>
+                <button class="btn btn-info" (click)="ApproveProposalLetter()">Set as Approved</button>
+            </div>
+            <div class="px-4" *ngIf="isPreparer || isReviewer">
+                <button class="btn btn-info" (click)="SetAsDraft()">Save as draft</button>
+            </div>
         </div>
     </div>
-</div>
-
-<div>
-    <button *ngIf="canEdit()" (click)="editProposalLetter()">Edit Proposal Letter</button>
-    <button *ngIf="canSendBack()" (click)="sendBackToPreparer()">Send Back for Correction</button>
-    <button *ngIf="canSendToApprover()" (click)="sendToApprover()">Send to Approver</button>
-    <button *ngIf="canApprove()" (click)="approveProposalLetter()">Approve Proposal Letter</button>
-    <!-- <button *ngIf="canExport()" (click)="exportDocument()">Export as PDF</button> -->
 </div>

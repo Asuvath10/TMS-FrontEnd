@@ -24,20 +24,31 @@ export class ProposalLetterService {
   getAllPLByStatusId(statusid: number): Observable<any> {
     return this.http.get<any>(baseurl + `ProposalLetter/GetallPLByStatusId/${statusid}`);
   }
+  getAllPLByReviewerId(reviewerId: number): Observable<any> {
+    return this.http.get<any>(baseurl + `ProposalLetter/GetallPLByReviewerId/${reviewerId}`);
+  }
+  getAllPLByPreparerId(preparerId: number): Observable<any> {
+    return this.http.get<any>(baseurl + `ProposalLetter/GetallPLByPreparerId/${preparerId}`);
+  }
+  getAllPLByApproverId(approverId: number): Observable<any> {
+    return this.http.get<any>(baseurl + `ProposalLetter/GetallPLByApproverId/${approverId}`);
+  }
   postPL(data: any): Observable<any> {
     return this.http.post<any>(baseurl + 'ProposalLetter', data);
   }
   updatePL(id: number, data: any): Observable<any> {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json; charset=utf-8');
     return this.http.put<any>(baseurl + `ProposalLetter/${id}`, data);
   }
   DeletePL(id: number): Observable<any> {
     return this.http.delete<any>(baseurl + `ProposalLetter/${id}`);
   }
-  getallFormsByPLId(PLid: number) {
-    return this.http.get(baseurl + `ProposalLetter/FormByPLId/${PLid}`);
+  getallFormsByPLId(PLid: number): Observable<any> {
+    return this.http.get<any>(baseurl + `ProposalLetter/FormByPLId/${PLid}`);
   }
-  getFormById(id: number) {
-    return this.http.get(baseurl + `ProposalLetter/Form/${id}`);
+  getFormById(id: number): Observable<any> {
+    return this.http.get<any>(baseurl + `ProposalLetter/Form/${id}`);
   }
   getAllFormss(id: number): Observable<any> {
     return this.http.get<any>(baseurl + `ProposalLetter/GetallForms`)

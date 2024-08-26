@@ -12,7 +12,7 @@ export class PLRequestListComponent implements OnInit {
   constructor(
     private plservice: ProposalLetterService,
     private userservice: UserService) { }
-  PLList: any = [];
+    PLList: any = [];
 
   ngOnInit(): void {
     this.getrequestedPL();

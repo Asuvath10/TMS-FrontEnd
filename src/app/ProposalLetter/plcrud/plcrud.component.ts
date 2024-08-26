@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ProposalLetterService } from '../proposal-letter.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from 'src/app/login/login.service';
 import { UserService } from 'src/app/User/user.service';
+import { HotToastService } from '@ngneat/hot-toast';
+import { FormBuilder, FormGroup } from '@angular/forms';
 // import ClassicEditor, * as ClasicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
@@ -11,78 +13,203 @@ import { UserService } from 'src/app/User/user.service';
   styleUrls: ['./plcrud.component.css']
 })
 export class PLCRUDComponent implements OnInit {
-  // public Editor=ClassicEditor;
-  // public editorConfig:any;
   plId: number = 0;
   proposalLetter: any;
   userDetails: any;
+  PLforms: any = [];
   forms: any = [];
+  formGroupArray: any[] = [];
   userRole: string = '';
   userId = 0;
   isEditing: boolean = false;
+  isPreparer: boolean = false;
+  isReviewer: boolean = false;
+  isApprover: boolean = false;
+  isPreparerDraft: boolean = false;
   canESign: boolean = false;
   selectedform: any;
-  
+
   constructor(
     private route: ActivatedRoute,
     private plService: ProposalLetterService,
     private loginservice: LoginService,
-    private userService: UserService
+    private userService: UserService,
+    private toastService: HotToastService,
+    private fb: FormBuilder,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-    // this.editorConfig = {
-    //   toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote']
-    // };
-  
     this.plId = this.route.snapshot.params['PLId'];
     this.loadProposalLetter();
     this.userRole = this.loginservice.getRole();
     console.log(this.userRole);
     this.userId = this.loginservice.getId();
     console.log(this.userId);
+    this.loadFormDetails();
+    this.initializeForms();
   }
 
-  loadProposalLetter(): void {
+  loadProposalLetter() {
     this.plService.getPLById(this.plId).subscribe(pl => {
       this.proposalLetter = pl;
-      console.log(pl, "This is pl");
+      if (this.proposalLetter.plstatusId === 2 && this.userRole === 'Preparer') {
+        this.isPreparer = true;
+      }
+      else if (this.proposalLetter.plstatusId === 3 && this.userRole === 'Reviewer') {
+        this.isReviewer = true;
+      }
+      else if (this.proposalLetter.plstatusId === 4 && this.userRole === 'Approver') {
+        this.isApprover = true;
+      }
+      console.log(this.proposalLetter, "This is pl");
       // this.forms = this.proposalLetter.forms || [];
       this.loadUserDetails();
       this.loadFormDetails();
-      console.log(this.forms);
+      console.log(this.forms, "onload");
     });
   }
 
-  loadUserDetails(): void {
+  loadUserDetails() {
     // Fetch user details related to the proposal letter
-    this.userService.getUserById(this.userId).subscribe(details => {
+    this.userService.getUserById(this.proposalLetter.userId).subscribe(details => {
       this.userDetails = details;
     });
   }
 
-  loadFormDetails(): void {
+  loadFormDetails() {
     //Fetch forms for the current pl
-    this.plService.getallFormsByPLId(this.plId).subscribe((f) => {
-      this.forms = f;
+    this.plService.getallFormsByPLId(this.plId).subscribe((formdata: any) => {
+      this.PLforms = formdata;
     });
   }
+  initializeForms() {
+    console.log(this.forms, "init");
+    this.forms = this.PLforms;
+    this.forms.forEach((form: any, index: any) => {
+      const formGroup = this.fb.group({
+        id: [form.id],
+        name: [form.name],
+        content: [form.content],
+        plid: [form.plid]
+      });
 
-  canEdit(): boolean {
-    return (this.proposalLetter.status === 'preparing' && this.userRole === 'preparer') ||
-      (this.proposalLetter.status === 'review' && this.userRole === 'reviewer');
+      this.formGroupArray.push(formGroup);
+    });
+  }
+  saveForm(index: number) {
+    console.log("inside save form")
+    var formData = this.formGroupArray[index];
+    console.log(this.formGroupArray, "Form details");
+    formData.plid = this.plId;
+    console.log(formData, "This the form create data");
+    this.plService.CreateForm(formData).subscribe((res: any) => {
+      console.log(this.forms, "After form create");
+    });
+  }
+  deleteForm(index: number) {
+    const formData = this.formGroupArray[index].value;
+    formData.plid = this.plId;
+    this.plService.DeleteForm(formData).subscribe((res: any) => {
+      this.loadFormDetails();
+      console.log(this.forms, "After form create");
+    });
+  }
+  addNewForm() {
+    this.forms.push({ name: '', cntent: '' });
+    this.formGroupArray.push(this.fb.group({
+      name: [''],
+      content: ['']
+    }));
   }
 
-  canSendBack(): boolean {
-    return this.proposalLetter.status === 'review' && this.userRole === 'reviewer';
+  RoutetoPLList() {
+    setTimeout(() => {
+      this.router.navigate(['/PLList']);
+    }, 500);
   }
-
-  canSendToApprover(): boolean {
-    return this.proposalLetter.status === 'review' && this.userRole === 'reviewer';
+  SendtoReviewer() {
+    this.proposalLetter.plstatusId = 3;
+    this.proposalLetter.draft = 0;
+    this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
+      next: (res: any) => {
+        this.toastService.success("Proposal Letter Sent to Review");
+        this.RoutetoPLList();
+      },
+      error: (err) => {
+        this.toastService.error("Error on Updating Reviewed PL");
+        console.error("Error on updating", err);
+      }
+    });
   }
-
-  canApprove(): boolean {
-    return this.proposalLetter.status === 'pending approval' && this.userRole === 'approver';
+  SendtoApprover() {
+    this.proposalLetter.plstatusId = 4;
+    this.proposalLetter.draft = 0;
+    this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
+      next: (res: any) => {
+        this.toastService.success("Proposal Letter Sent to Approver");
+        this.RoutetoPLList();
+      },
+      error: (err) => {
+        this.toastService.error("Error on updating pending approval PL");
+        console.error("Error on updating", err);
+      }
+    });
+  }
+  sendBackToReviewer() {
+    this.proposalLetter.plstatusId = 3;
+    console.log(this.proposalLetter, "Sending back to reviewer");
+    this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
+      next: (res: any) => {
+        this.toastService.success("Proposal Letter Sent Back To Reviewer");
+        this.RoutetoPLList();
+      },
+      error: (err) => {
+        this.toastService.error("Error on sending back PL to Reviewer");
+        console.error("Error on updating", err);
+      }
+    });
+  }
+  sendBackToPreparer() {
+    this.proposalLetter.plstatusId = 2;
+    console.log(this.proposalLetter, "Sending back to Preparer");
+    this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
+      next: (res: any) => {
+        this.toastService.success("Proposal Letter Sent Back To Preparer");
+        this.RoutetoPLList();
+      },
+      error: (err) => {
+        this.toastService.error("Error on sending back PL to Preparer");
+        console.error("Error on updating", err);
+      }
+    });
+  }
+  ApproveProposalLetter() {
+    this.proposalLetter.plstatusId = 5;
+    this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
+      next: () => {
+        this.toastService.success("Proposal Letter Approved Successfully");
+        this.RoutetoPLList();
+      },
+      error: (err) => {
+        this.toastService.error("Error on Approving PL");
+        console.error("Error on updating", err);
+      }
+    });
+  }
+  SetAsDraft() {
+    this.proposalLetter.draft = true;
+    console.log(this.proposalLetter, "Set to draft");
+    this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
+      next: () => {
+        this.toastService.success("Proposal Letter Set to Draft");
+        this.RoutetoPLList();
+      },
+      error: (err) => {
+        this.toastService.error("Error on Set to draft PL");
+        console.error("Error on updating", err);
+      }
+    });
   }
 
   // exportDocument(): void {
@@ -98,41 +225,12 @@ export class PLCRUDComponent implements OnInit {
   selectForm(formId: number): void {
     this.selectedform = this.forms.find((f: any) => f.id === formId);
   }
-  AddForm(): void {
-    this.plService.CreateForm
-  }
+
   editProposalLetter(): void {
     this.isEditing = !this.isEditing;
   }
 
-  saveContent(): void {
-    this.plService.updateForm(this.selectedform.Id, this.selectedform).subscribe(() => {
-      this.isEditing = false;
-    });
-  }
+  UploadEsign() {
 
-  sendBackToPreparer(): void {
-    this.proposalLetter.plstatusId = 2;
-    this.plService.updatePL(this.proposalLetter.Id, this.proposalLetter).subscribe(() => {
-      this.loadProposalLetter();
-    });
-  }
-
-  sendToApprover(): void {
-    this.proposalLetter.plstatusId = 4;
-    this.canESign = true;
-    this.plService.updatePL(this.proposalLetter.Id, this.proposalLetter).subscribe(() => {
-      this.loadProposalLetter();
-    });
-  }
-
-  approveProposalLetter(): void {
-    this.proposalLetter.plstatusId = 5;
-    this.plService.updatePL(this.proposalLetter.Id, this.proposalLetter).subscribe(() => {
-      this.loadProposalLetter();
-    });
-  }
-  UploadEsign(){
-    
   }
 }

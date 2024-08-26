@@ -57,12 +57,20 @@ export class PLListComponent implements OnInit {
   }
 
   getProposals(userId: number) {
-    if (this.userrole != 1) {
+    if (this.userrole == 2) {
       this.getdata = this.PLService.getAllPLByUserId(userId);
     }
-    else {
+    else if (this.userrole == 1) {
       this.getdata = this.PLService.getAllPL();
-
+    }
+    else if (this.userrole == 3) {
+      this.getdata = this.PLService.getAllPLByPreparerId(userId);
+    }
+    else if (this.userrole == 4) {
+      this.getdata = this.PLService.getAllPLByReviewerId(userId);
+    }
+    else {
+      this.getdata = this.PLService.getAllPLByApproverId(userId);
     }
     this.getdata.subscribe((res: any) => {
       this.proposalList = res;
@@ -104,6 +112,7 @@ export class PLListComponent implements OnInit {
   }
   ExportPDF(PLId: number) {
     this.PLService.ExportPDF(PLId).subscribe((res: Blob) => {
+      console.log(res, "The fle");
       const url = window.URL.createObjectURL(res);
       const anchor = document.createElement('a');
       anchor.href = url;

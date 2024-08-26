@@ -6,7 +6,8 @@
     <div *ngIf="userrole === '1'" class="pb-3">
         <a class="btn btn-info btn-sm hover" routerLink="/PLrequest">PL Requests</a>
     </div>
-        <div class="nav-item"><a *ngIf="Login.IsloggedIn" class="btn btn-info justify-content-end" (click)="LogOut()"> LogOut</a></div>
+    <div class="nav-item"><a *ngIf="Login.IsloggedIn" class="btn btn-info justify-content-end" (click)="LogOut()">
+            LogOut</a></div>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -25,10 +26,30 @@
                 <td>{{ proposal.plstatusId }}</td>
                 <td>{{proposal.createdOn | date: 'yyyy-MM-dd'}}</td>
                 <td>
-                    <a class="btn btn-info btn-sm" *ngIf="proposal.plstatusId === 'Approved'" (click)="ExportPDF(proposal.id)">Export PDF</a>
+                    <a class="btn btn-info btn-sm" *ngIf="proposal.plstatusId === 'Approved'"
+                        (click)="ExportPDF(proposal.id)">Export PDF</a>
                 </td>
-                <td>
-                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/PLcrud">View Details</a>
+                <td *ngIf="proposal.plstatusId === 'Approved'">
+                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/ViewPL">View Details</a>
+                </td>
+                <!-- <td *ngIf="userrole === '3'">
+                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/ViewPL">View Details</a>
+                </td> -->
+                <td *ngIf="userrole === '3' && proposal.plstatusId === 'Preparing'">
+                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/PLcrud">Prepare</a>
+                </td>
+                <td *ngIf="userrole === '4' && proposal.plstatusId === 'Move to Review'">
+                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/PLcrud">Review</a>
+                </td>
+                <td *ngIf="userrole === '4' && proposal.plstatusId === 'Preparing' && proposal.draft === true">
+                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/ViewPL">View Details</a>
+                </td>
+                <td
+                    *ngIf="userrole === '5' && (proposal.plstatusId === 'Preparing' || proposal.plstatusId === 'Move to Review') && proposal.draft === true">
+                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/ViewPL">View Details</a>
+                </td>
+                <td *ngIf="userrole === '5' && proposal.plstatusId === 'Pending Approval'">
+                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/PLcrud">Check for Approve</a>
                 </td>
             </tr>
         </tbody>
