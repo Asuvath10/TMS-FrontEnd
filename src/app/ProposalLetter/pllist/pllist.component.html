@@ -49,7 +49,7 @@
                     <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/ViewPL">View Details</a>
                 </td>
                 <td *ngIf="userrole === '5' && proposal.plstatusId === 'Pending Approval'">
-                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/PLcrud">Check for Approve</a>
+                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/ViewPL">Approve</a>
                 </td>
             </tr>
         </tbody>

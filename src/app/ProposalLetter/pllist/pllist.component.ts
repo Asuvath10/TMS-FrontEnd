@@ -4,6 +4,7 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { LoginService } from 'src/app/login/login.service';
 import { ProposalLetterService } from '../proposal-letter.service';
 import { Router } from '@angular/router';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-pllist',
@@ -111,14 +112,25 @@ export class PLListComponent implements OnInit {
     });
   }
   ExportPDF(PLId: number) {
-    this.PLService.ExportPDF(PLId).subscribe((res: Blob) => {
-      console.log(res, "The fle");
-      const url = window.URL.createObjectURL(res);
-      const anchor = document.createElement('a');
-      anchor.href = url;
-      anchor.download = `Document.pdf`;
-      anchor.click();
-      window.URL.revokeObjectURL(url);
+    console.log("Expost method");
+    var mediaType = 'application/pdf';
+    this.PLService.ExportPDF(PLId).subscribe({
+      next: (res: any) => {
+        var blob = new Blob([res], { type: mediaType });
+        const fileName = `ProposalLetter_${PLId}.pdf`;
+        console.log(res, "The fle");
+        saveAs(blob, fileName);
+        // this.filesaver.save(blob);
+        // const url = window.URL.createObjectURL(blob);
+        // const anchor = document.createElement('a');
+        // anchor.href = url;
+        // anchor.download = `Document.pdf`;
+        // anchor.click();
+        // window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.error(err);
+      }
     });
   }
   LogOut() {

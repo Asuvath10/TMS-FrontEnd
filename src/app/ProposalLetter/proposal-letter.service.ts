@@ -68,6 +68,9 @@ export class ProposalLetterService {
     return this.http.get<any>(baseurl + `ProposalLetter/PLStatus/${id}`);
   }
   ExportPDF(PLid: number): Observable<Blob> {
-    return this.http.get<Blob>(baseurl + `Document/GeneratePdf?plId=${PLid}`);
+    return this.http.get<Blob>(baseurl + `Document/GeneratePdf?plId=${PLid}`, { responseType: 'blob' as 'json' });
+  }
+  UploadFile(forlderpath:string,ContentType:string) :Observable<any>{
+    
   }
 }
