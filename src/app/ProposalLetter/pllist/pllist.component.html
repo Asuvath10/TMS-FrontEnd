@@ -1,4 +1,5 @@
 <div class="container-fluid">
+    <h2>Welcome, {{this.userName}}</h2>
     <h2>Proposals</h2>
     <div *ngIf="requestPL === true && userrole === '2'" class="pb-3">
         <button class="btn btn-info btn-sm hover" (click)="OnclickRequest()">Request Proposal</button>

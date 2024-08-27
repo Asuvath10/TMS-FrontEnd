@@ -14,26 +14,28 @@
         <p class="px-4">Pan: {{ userDetails?.pan }}</p>
         <p>assessmentYear: {{ proposalLetter?.assessmentYear }}</p>
     </div>
-    <div class="row">
-        <div *ngFor="let form of PLforms">
-            <div class="row mt-4">
-                <div class="col-md-2 pb-2"><b class="text-dark">{{form.name}}</b></div>
-                <div class="col-md-8">
-                    <p>{{form.content}}</p>
-                </div>
+    <div *ngFor="let form of PLforms">
+        <div class="row mt-4">
+            <div class="col-md-2"><b class="text-dark">{{form.name}}</b></div>
+            <div class="col-md-8">
+                <p>{{form.content}}</p>
             </div>
         </div>
     </div>
-    <div *ngIf="isApprover">
+    <div *ngIf="isApprover && (!eSigned)" class="pb-3">
         <h4>Approve with E-signature</h4>
-        <input type="file" (change)="uploadESign($event)" />
+        <input type="file" (change)="uploadImage($event)" />
     </div>
+
+    <img *ngIf="uploadedImage" [src]="uploadedImage" alt="Uploaded sign" />
     <div>
-        <div class="row">
-            <div class="row " *ngIf="isApprover">
+        <div class="row" *ngIf="isApprover">
+            <div class="px-3">
                 <button class="btn btn-info" (click)="sendBackToReviewer()">Send Back to Reviewer</button>
-                <button class="btn btn-info" (click)="ApproveProposalLetter()">Set as Approved</button>
             </div>
+            <button class="btn btn-info" (click)="ApproveProposalLetter()" [disabled]="!eSigned">Set as
+                Approved</button>
+
         </div>
     </div>
 

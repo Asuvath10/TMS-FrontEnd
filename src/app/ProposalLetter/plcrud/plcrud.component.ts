@@ -130,7 +130,7 @@ export class PLCRUDComponent implements OnInit {
   RoutetoPLList() {
     setTimeout(() => {
       this.router.navigate(['/PLList']);
-    }, 500);
+    }, 300);
   }
   SendtoReviewer() {
     this.proposalLetter.plstatusId = 3;

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { baseurl } from 'src/URL';
@@ -70,7 +70,12 @@ export class ProposalLetterService {
   ExportPDF(PLid: number): Observable<Blob> {
     return this.http.get<Blob>(baseurl + `Document/GeneratePdf?plId=${PLid}`, { responseType: 'blob' as 'json' });
   }
-  UploadFile(forlderpath:string,ContentType:string) :Observable<any>{
-    
+  UploadFile(data: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', data);
+    return this.http.put<any>(`http://localhost:5003/api/Document/upload`, data);
+  }
+  DownloadFile(fileUrl: string): Observable<Blob> {
+    return this.http.get<Blob>(`http://localhost:5003/api/Document/download?fileUrl=${fileUrl}`, { responseType: 'blob' as 'json' });
   }
 }
