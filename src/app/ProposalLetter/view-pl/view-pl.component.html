@@ -31,8 +31,11 @@
     <img *ngIf="showImage" [src]="signImage" alt="Uploaded sign" />
     <div>
         <div class="row" *ngIf="isApprover">
-            <div class="px-3">
+            <div *ngIf="!isReviewerLess" class="px-3">
                 <button class="btn btn-info" (click)="sendBackToReviewer()">Send Back to Reviewer</button>
+            </div>
+            <div *ngIf="isReviewerLess" class="px-3">
+                <button class="btn btn-info" (click)="sendBackToReviewer()">Send Back to Preparer</button>
             </div>
             <button class="btn btn-info" (click)="ApproveProposalLetter()" [disabled]="!eSigned">Set as
                 Approved</button>

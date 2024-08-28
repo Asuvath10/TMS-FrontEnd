@@ -46,8 +46,11 @@
 
     <div>
         <div class="row">
-            <div class="px-4" *ngIf="isPreparer">
+            <div class="px-4" *ngIf="isPreparer && !isReviewerLess">
                 <button class="btn btn-info" (click)="SendtoReviewer()">Send to Reviewer</button>
+            </div>
+            <div class="px-4" *ngIf="isPreparer && isReviewerLess">
+                <button class="btn btn-info" (click)="SendtoApprover()">Send to Approver</button>
             </div>
             <div class="row" *ngIf="isReviewer">
                 <div class="px-4">
@@ -58,7 +61,12 @@
                 </div>
             </div>
             <div class="row " *ngIf="isApprover">
-                <button class="btn btn-info" (click)="sendBackToReviewer()">Send Back to Reviewer</button>
+                <div *ngIf="!isReviewerLess">
+                    <button class="btn btn-info" (click)="sendBackToReviewer()">Send Back to Reviewer</button>
+                </div>
+                <div *ngIf="isReviewerLess">
+                    <button class="btn btn-info" (click)="sendBackToPreparer()">Send Back to Preparer</button>
+                </div>
                 <button class="btn btn-info" (click)="ApproveProposalLetter()">Set as Approved</button>
             </div>
             <div class="px-4" *ngIf="isPreparer || isReviewer">

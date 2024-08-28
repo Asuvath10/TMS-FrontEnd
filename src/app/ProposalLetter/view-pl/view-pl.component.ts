@@ -23,6 +23,7 @@ export class ViewPLComponent implements OnInit {
   PLforms: any = [];
   signImage: Blob[] = [];
   plId: number = 0;
+  isReviewerLess: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private plService: ProposalLetterService,
@@ -48,6 +49,9 @@ export class ViewPLComponent implements OnInit {
       }
       if (this.proposalLetter.approverSignUrl != null) {
         this.eSigned = true;
+      }
+      if (this.proposalLetter.reviewerId == null || this.proposalLetter.reviewerId === 0) {
+        this.isReviewerLess = true;
       }
       this.loadUserDetails();
       this.loadFormDetails();
@@ -96,6 +100,21 @@ export class ViewPLComponent implements OnInit {
       },
       error: (err) => {
         this.toastService.error("Error on sending back PL to Reviewer");
+      }
+    });
+  }
+  sendBackToPreparer() {
+    this.proposalLetter.plstatusId = 2;
+    this.proposalLetter.draft = false;
+    console.log(this.proposalLetter, "Sending back to Preparer");
+    this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
+      next: (res: any) => {
+        this.toastService.success("Proposal Letter Sent Back To Preparer");
+        this.RoutetoPLList();
+      },
+      error: (err) => {
+        this.toastService.error("Error on sending back PL to Preparer");
+        console.error("Error on updating", err);
       }
     });
   }

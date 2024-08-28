@@ -28,6 +28,7 @@ export class PLCRUDComponent implements OnInit {
   isPreparerDraft: boolean = false;
   canESign: boolean = false;
   selectedform: any;
+  isReviewerLess: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -49,6 +50,7 @@ export class PLCRUDComponent implements OnInit {
   loadProposalLetter() {
     this.plService.getPLById(this.plId).subscribe(pl => {
       this.proposalLetter = pl;
+      console.log(this.proposalLetter);
       if (this.proposalLetter.plstatusId === 2 && this.loginservice.IsPreparer) {
         this.isPreparer = true;
       }
@@ -58,10 +60,13 @@ export class PLCRUDComponent implements OnInit {
       else if (this.proposalLetter.plstatusId === 4 && this.loginservice.IsApprover) {
         this.isApprover = true;
       }
+      if (this.proposalLetter.reviewerId == null || this.proposalLetter.reviewerId === 0) {
+        this.isReviewerLess = true;
+      }
+      // if(this.proposalLetter.reviewerId)
       // this.forms = this.proposalLetter.forms || [];
       this.loadUserDetails();
       this.loadFormDetails();
-      console.log(this.PLforms, "onload");
     });
   }
 
@@ -69,7 +74,6 @@ export class PLCRUDComponent implements OnInit {
     // Fetch user details related to the proposal letter
     this.userService.getUserById(this.proposalLetter.userId).subscribe(details => {
       this.userDetails = details;
-      console.log(this.userDetails, "USer details");
     });
   }
 
@@ -77,7 +81,7 @@ export class PLCRUDComponent implements OnInit {
     //Fetch forms for the current pl
     this.plService.getallFormsByPLId(this.plId).subscribe((formdata: any) => {
       this.PLforms = formdata;
-      console.log(this.PLforms, "load forms")
+      console.log(this.PLforms, "Myforms");
       this.initializeForms();
     });
   }
