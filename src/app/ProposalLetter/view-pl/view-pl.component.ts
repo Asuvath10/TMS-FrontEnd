@@ -4,6 +4,7 @@ import { ProposalLetterService } from '../proposal-letter.service';
 import { UserService } from 'src/app/User/user.service';
 import { LoginService } from 'src/app/login/login.service';
 import { HotToastService } from '@ngneat/hot-toast';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-view-pl',
@@ -21,7 +22,7 @@ export class ViewPLComponent implements OnInit {
   eSigned: boolean = false;
   showImage: boolean = false
   PLforms: any = [];
-  signImage: Blob[] = [];
+  signImage: any;
   plId: number = 0;
   isReviewerLess: boolean = false;
   constructor(
@@ -30,7 +31,8 @@ export class ViewPLComponent implements OnInit {
     private userService: UserService,
     public loginService: LoginService,
     private toastService: HotToastService,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -83,7 +85,11 @@ export class ViewPLComponent implements OnInit {
     if (this.proposalLetter.approverSignUrl != null) {
       this.plService.DownloadFile(this.proposalLetter.approverSignUrl).subscribe({
         next: (res) => {
-
+          console.log(res);
+          const blob = new Blob([res], { type: mediaType });
+          const blobURL = URL.createObjectURL(blob);
+          this.signImage = this.sanitizer.bypassSecurityTrustHtml(blobURL) as string;
+          console.log(this.signImage);
         },
         error: (err => {
           console.error(err, "File not downloaded");

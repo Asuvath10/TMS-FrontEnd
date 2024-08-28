@@ -28,7 +28,7 @@
         <input type="file" (change)="uploadImage($event)" />
     </div>
 
-    <img *ngIf="showImage" [src]="signImage" alt="Uploaded sign" />
+    <img *ngIf="showImage" [src]="signImage" alt="Uploaded sign" class="thumbnail" />
     <div>
         <div class="row" *ngIf="isApprover">
             <div *ngIf="!isReviewerLess" class="px-3">

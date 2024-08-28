@@ -5,6 +5,8 @@ import { LoginService } from 'src/app/login/login.service';
 import { UserService } from 'src/app/User/user.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { PLStatus } from 'src/app/Models/PLStatus';
+
 // import ClassicEditor, * as ClasicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
@@ -13,6 +15,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./plcrud.component.css']
 })
 export class PLCRUDComponent implements OnInit {
+  plStatus = PLStatus;
   plId: number = 0;
   proposalLetter: any;
   userDetails: any;
@@ -51,7 +54,7 @@ export class PLCRUDComponent implements OnInit {
     this.plService.getPLById(this.plId).subscribe(pl => {
       this.proposalLetter = pl;
       console.log(this.proposalLetter);
-      if (this.proposalLetter.plstatusId === 2 && this.loginservice.IsPreparer) {
+      if (this.proposalLetter.plstatus.status === this.plStatus.Preparing && this.loginservice.IsPreparer) {
         this.isPreparer = true;
       }
       else if (this.proposalLetter.plstatusId === 3 && this.loginservice.IsReviewer) {

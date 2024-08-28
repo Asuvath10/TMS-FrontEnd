@@ -18,3 +18,9 @@ body {
   right: 10px;
   top: 5px;
 }
+
+.thumbnail {
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+}
