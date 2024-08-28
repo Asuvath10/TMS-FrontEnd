@@ -49,13 +49,13 @@ export class PLCRUDComponent implements OnInit {
   loadProposalLetter() {
     this.plService.getPLById(this.plId).subscribe(pl => {
       this.proposalLetter = pl;
-      if (this.proposalLetter.plstatusId === 2 && this.userRole === 'Preparer') {
+      if (this.proposalLetter.plstatusId === 2 && this.loginservice.IsPreparer) {
         this.isPreparer = true;
       }
-      else if (this.proposalLetter.plstatusId === 3 && this.userRole === 'Reviewer') {
+      else if (this.proposalLetter.plstatusId === 3 && this.loginservice.IsReviewer) {
         this.isReviewer = true;
       }
-      else if (this.proposalLetter.plstatusId === 4 && this.userRole === 'Approver') {
+      else if (this.proposalLetter.plstatusId === 4 && this.loginservice.IsApprover) {
         this.isApprover = true;
       }
       // this.forms = this.proposalLetter.forms || [];
@@ -162,6 +162,7 @@ export class PLCRUDComponent implements OnInit {
   }
   sendBackToReviewer() {
     this.proposalLetter.plstatusId = 3;
+    this.proposalLetter.draft = false;
     console.log(this.proposalLetter, "Sending back to reviewer");
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
       next: (res: any) => {
@@ -176,6 +177,7 @@ export class PLCRUDComponent implements OnInit {
   }
   sendBackToPreparer() {
     this.proposalLetter.plstatusId = 2;
+    this.proposalLetter.draft = false;
     console.log(this.proposalLetter, "Sending back to Preparer");
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
       next: (res: any) => {
@@ -214,27 +216,9 @@ export class PLCRUDComponent implements OnInit {
         console.error("Error on updating", err);
       }
     });
-  }
-
-  // exportDocument(): void {
-  //   this.plService.exportProposalLetter(this.plId).subscribe(blob => {
-  //     const url = window.URL.createObjectURL(blob);
-  //     const a = document.createElement('a');
-  //     a.href = url;
-  //     a.download = 'proposal-letter.pdf';
-  //     a.click();
-  //     window.URL.revokeObjectURL(url);
-  //   });
-  // }
-  selectForm(formId: number): void {
-    this.selectedform = this.forms.find((f: any) => f.id === formId);
-  }
-
-  editProposalLetter(): void {
-    this.isEditing = !this.isEditing;
-  }
-
-  UploadEsign() {
-
+  } 
+  LogOut() {
+    localStorage.clear();
+    this.router.navigate(['/Login']);
   }
 }

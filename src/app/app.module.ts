@@ -19,6 +19,7 @@ import { UserListComponent } from './User/user-list/user-list.component';
 import { AssignUserComponent } from './User/assign-user/assign-user.component';
 import { PLRequestListComponent } from './ProposalLetter/plrequest-list/plrequest-list.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { LogoutComponent } from './Shared/logout/logout.component';
 export function tokenGetter() {
   return localStorage.getItem("Token");
 }
@@ -32,7 +33,8 @@ export function tokenGetter() {
     PLCRUDComponent,
     UserListComponent,
     AssignUserComponent,
-    PLRequestListComponent
+    PLRequestListComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

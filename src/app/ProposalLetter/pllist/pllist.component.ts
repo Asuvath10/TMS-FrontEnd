@@ -50,7 +50,7 @@ export class PLListComponent implements OnInit {
   //variable for expost pdf
   IsApproved: boolean = false;
   //Variable for Request PL for current assessment year 
-  requestPL: boolean = true;
+  isRequestPL: boolean = true;
 
   ngOnInit(): void {
     this.getProposals(this.currentuserId);
@@ -58,16 +58,16 @@ export class PLListComponent implements OnInit {
   }
 
   getProposals(userId: number) {
-    if (this.userrole == 2) {
+    if (this.Login.IsUser) {
       this.getdata = this.PLService.getAllPLByUserId(userId);
     }
-    else if (this.userrole == 1) {
+    else if (this.Login.IsAdmin) {
       this.getdata = this.PLService.getAllPL();
     }
-    else if (this.userrole == 3) {
+    else if (this.Login.IsPreparer) {
       this.getdata = this.PLService.getAllPLByPreparerId(userId);
     }
-    else if (this.userrole == 4) {
+    else if (this.Login.IsReviewer) {
       this.getdata = this.PLService.getAllPLByReviewerId(userId);
     }
     else {
@@ -77,15 +77,8 @@ export class PLListComponent implements OnInit {
       this.proposalList = res;
       this.proposalList.forEach((proposal: any) => {
         if (proposal.assessmentYear == "2024-2025") {
-          this.requestPL = false;
+          this.isRequestPL = false;
         }
-        this.PLService.getPLStatusbyId(proposal.plstatusId).subscribe((statusData: any) => {
-          proposal.plstatusId = statusData.status;
-        },
-          (error) => {
-            console.error('Error fetching status', error);
-          }
-        );
       });
     },
       (error: any) => {
@@ -102,7 +95,7 @@ export class PLListComponent implements OnInit {
 
         setTimeout(() => {
           window.location.replace('/PLList');
-        }, 500);
+        }, 100);
       },
       error: (err: any) => {
         if (err['error'] == 'error') {
@@ -120,21 +113,10 @@ export class PLListComponent implements OnInit {
         const fileName = `ProposalLetter_${PLId}.pdf`;
         console.log(res, "The fle");
         saveAs(blob, fileName);
-        // this.filesaver.save(blob);
-        // const url = window.URL.createObjectURL(blob);
-        // const anchor = document.createElement('a');
-        // anchor.href = url;
-        // anchor.download = `Document.pdf`;
-        // anchor.click();
-        // window.URL.revokeObjectURL(url);
       },
       error: (err) => {
         console.error(err);
       }
     });
-  }
-  LogOut() {
-    localStorage.clear();
-    this.router.navigate(['/Login']);
   }
 }

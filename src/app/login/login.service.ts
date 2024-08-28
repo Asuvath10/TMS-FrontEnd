@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
@@ -7,7 +8,9 @@ import { jwtDecode } from 'jwt-decode';
 
 export class LoginService {
 
-  constructor() { if (this.IsloggedIn) this.CheckUsers(); }
+  constructor(
+    private router: Router
+  ) { if (this.IsloggedIn) this.CheckUsers(); }
 
   public IsloggedIn = localStorage.getItem('Token') != null;
   public DecodedToken: any = jwtDecode(this.getToken());
@@ -62,4 +65,5 @@ export class LoginService {
       return '';
     }
   }
+  
 }

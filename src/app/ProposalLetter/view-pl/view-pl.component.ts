@@ -27,7 +27,7 @@ export class ViewPLComponent implements OnInit {
     private route: ActivatedRoute,
     private plService: ProposalLetterService,
     private userService: UserService,
-    private loginService: LoginService,
+    public loginService: LoginService,
     private toastService: HotToastService,
     private router: Router
   ) { }
@@ -43,7 +43,7 @@ export class ViewPLComponent implements OnInit {
     this.plService.getPLById(this.plId).subscribe(pl => {
       this.proposalLetter = pl;
       console.log(this.proposalLetter, "MyPL")
-      if (this.proposalLetter.plstatusId === 4 && this.userRole === 'Approver') {
+      if (this.proposalLetter.plstatusId === 4 && (this.loginService.IsApprover)) {
         this.isApprover = true;
       }
       if (this.proposalLetter.approverSignUrl != null) {

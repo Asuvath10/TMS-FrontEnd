@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProposalLetterService } from '../proposal-letter.service';
 import { UserService } from 'src/app/User/user.service';
+import { Router } from '@angular/router';
+import { LoginService } from 'src/app/login/login.service';
 
 @Component({
   selector: 'app-plrequest-list',
@@ -11,8 +13,9 @@ export class PLRequestListComponent implements OnInit {
 
   constructor(
     private plservice: ProposalLetterService,
+    public loginService: LoginService,
     private userservice: UserService) { }
-    PLList: any = [];
+  PLList: any = [];
 
   ngOnInit(): void {
     this.getrequestedPL();
@@ -33,4 +36,5 @@ export class PLRequestListComponent implements OnInit {
       }
     );
   }
+
 }
