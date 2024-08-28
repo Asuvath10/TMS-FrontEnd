@@ -54,13 +54,13 @@ export class PLCRUDComponent implements OnInit {
     this.plService.getPLById(this.plId).subscribe(pl => {
       this.proposalLetter = pl;
       console.log(this.proposalLetter);
-      if (this.proposalLetter.plstatus.status === this.plStatus.Preparing && this.loginservice.IsPreparer) {
+      if (this.proposalLetter.plstatusId === PLStatus.Preparing && this.loginservice.IsPreparer) {
         this.isPreparer = true;
       }
-      else if (this.proposalLetter.plstatusId === 3 && this.loginservice.IsReviewer) {
+      else if (this.proposalLetter.plstatusId === PLStatus.MovetoReview && this.loginservice.IsReviewer) {
         this.isReviewer = true;
       }
-      else if (this.proposalLetter.plstatusId === 4 && this.loginservice.IsApprover) {
+      else if (this.proposalLetter.plstatusId === PLStatus.PendingApproval && this.loginservice.IsApprover) {
         this.isApprover = true;
       }
       if (this.proposalLetter.reviewerId == null || this.proposalLetter.reviewerId === 0) {
@@ -139,14 +139,14 @@ export class PLCRUDComponent implements OnInit {
     this.router.navigate(['/PLList']);
   }
   SendtoReviewer() {
-    this.proposalLetter.plstatusId = 3;
+    this.proposalLetter.plstatusId = PLStatus.MovetoReview;
     this.proposalLetter.draft = 0;
     console.log(this.proposalLetter, "Sending to reviewer");
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
       next: (res: any) => {
         console.log(this.proposalLetter);
         this.toastService.success("Proposal Letter Sent to Review");
-        // this.RoutetoPLList();
+        this.RoutetoPLList();
       },
       error: (err) => {
         this.toastService.error("Error on Updating Reviewed PL");

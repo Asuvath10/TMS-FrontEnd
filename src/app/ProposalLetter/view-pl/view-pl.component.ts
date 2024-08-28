@@ -88,7 +88,7 @@ export class ViewPLComponent implements OnInit {
           console.log(res);
           const blob = new Blob([res], { type: mediaType });
           const blobURL = URL.createObjectURL(blob);
-          this.signImage = this.sanitizer.bypassSecurityTrustHtml(blobURL) as string;
+          this.signImage = this.sanitizer.bypassSecurityTrustUrl(blobURL) as string;
           console.log(this.signImage);
         },
         error: (err => {

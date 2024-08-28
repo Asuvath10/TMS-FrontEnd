@@ -1,7 +1,7 @@
 export enum PLStatus {
-    New = 'New',
-    Preparing = 'Preparing',
-    MovetoReview = 'Move to Review',
-    PendingApproval = 'Pending Approval',
-    Approved = 'Approved'
+    New = 1,
+    Preparing = 2,
+    MovetoReview = 3,
+    PendingApproval = 4,
+    Approved = 5
 }

@@ -30,7 +30,7 @@
 
     <img *ngIf="showImage" [src]="signImage" alt="Uploaded sign" class="thumbnail" />
     <div>
-        <div class="row" *ngIf="isApprover">
+        <div class="row pt-3" *ngIf="isApprover">
             <div *ngIf="!isReviewerLess" class="px-3">
                 <button class="btn btn-info" (click)="sendBackToReviewer()">Send Back to Reviewer</button>
             </div>

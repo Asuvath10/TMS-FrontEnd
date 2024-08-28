@@ -26,7 +26,7 @@
                 <td>{{ proposal?.plStatus?.status }}</td>
                 <td>{{proposal?.createdOn | date: 'yyyy-MM-dd'}}</td>
                 <td>
-                    <a class="btn btn-info btn-sm" *ngIf="proposal.plStatus.id === 5"
+                    <a class="btn btn-info btn-sm" *ngIf="proposal.plstatusId === 5"
                         (click)="ExportPDF(proposal.id)">Export PDF</a>
                 </td>
                 <td *ngIf="proposal.plStatus.id === 5">

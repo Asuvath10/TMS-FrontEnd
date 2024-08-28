@@ -43,11 +43,10 @@ export class LoginComponent {
     this.http.post('http://localhost:5004/api/Authentication/login', this.Login).subscribe({
       next: (res: any) => {
         localStorage.setItem('Token', res.token);
-
         this.toastService.success('Loggedin Successfully');
         setTimeout(() => {
           window.location.replace('/PLList');
-        }, 200);
+        }, 300);
       },
 
       error: (err: any) => {
