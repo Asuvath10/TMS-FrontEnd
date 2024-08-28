@@ -28,7 +28,7 @@
         <input type="file" (change)="uploadImage($event)" />
     </div>
 
-    <img *ngIf="uploadedImage" [src]="uploadedImage" alt="Uploaded sign" />
+    <img *ngIf="showImage" [src]="signImage" alt="Uploaded sign" />
     <div>
         <div class="row" *ngIf="isApprover">
             <div class="px-3">
@@ -39,5 +39,4 @@
 
         </div>
     </div>
-
 </div>

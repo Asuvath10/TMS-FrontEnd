@@ -1,24 +1,27 @@
 <div class="container-fluid">
     <app-logout></app-logout>
     <h2>PL Requests</h2>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>UserName</th>
-                <th>PLId</th>
-                <th>assessmentYear</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let proposal of PLList">
-                <td>{{ proposal.userId }}</td>
-                <td>{{ proposal.id }}</td>
-                <td>{{ proposal.assessmentYear }}</td>
-                <td>
-                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/AssignUser">Assign Users</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container-fluid pt-1 justify-content-between align-items-center">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>UserName</th>
+                    <th>PLId</th>
+                    <th>assessmentYear</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let proposal of PLList">
+                    <td>{{ proposal.userId }}</td>
+                    <td>{{ proposal.id }}</td>
+                    <td>{{ proposal.assessmentYear }}</td>
+                    <td>
+                        <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/AssignUser">Assign Users</a>
+                    </td>
+                </tr>
+                <div *ngIf="PLList.length ===0" class="d-flex align-items-center text-dark">No Data Found</div>
+            </tbody>
+        </table>
+    </div>
 </div>

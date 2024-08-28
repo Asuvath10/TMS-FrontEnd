@@ -34,7 +34,7 @@ export class PLCRUDComponent implements OnInit {
     private plService: ProposalLetterService,
     private loginservice: LoginService,
     private userService: UserService,
-    private toastService: HotToastService,
+    public toastService: HotToastService,
     private fb: FormBuilder,
     private router: Router
   ) { }
@@ -69,6 +69,7 @@ export class PLCRUDComponent implements OnInit {
     // Fetch user details related to the proposal letter
     this.userService.getUserById(this.proposalLetter.userId).subscribe(details => {
       this.userDetails = details;
+      console.log(this.userDetails, "USer details");
     });
   }
 
@@ -128,17 +129,17 @@ export class PLCRUDComponent implements OnInit {
   }
 
   RoutetoPLList() {
-    setTimeout(() => {
-      this.router.navigate(['/PLList']);
-    }, 300);
+    this.router.navigate(['/PLList']);
   }
   SendtoReviewer() {
     this.proposalLetter.plstatusId = 3;
     this.proposalLetter.draft = 0;
+    console.log(this.proposalLetter, "Sending to reviewer");
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
       next: (res: any) => {
+        console.log(this.proposalLetter);
         this.toastService.success("Proposal Letter Sent to Review");
-        this.RoutetoPLList();
+        // this.RoutetoPLList();
       },
       error: (err) => {
         this.toastService.error("Error on Updating Reviewed PL");
@@ -216,7 +217,7 @@ export class PLCRUDComponent implements OnInit {
         console.error("Error on updating", err);
       }
     });
-  } 
+  }
   LogOut() {
     localStorage.clear();
     this.router.navigate(['/Login']);

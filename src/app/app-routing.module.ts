@@ -16,7 +16,7 @@ import { PLRequestListComponent } from './ProposalLetter/plrequest-list/plreques
 import { AssignUserComponent } from './User/assign-user/assign-user.component';
 
 const routes: Routes = [
-  { path: "", redirectTo: "", pathMatch: "full" },
+  { path: "", redirectTo: "Login", pathMatch: "full" },
   { path: "Login", component: LoginComponent },
   { path: "login", component: LoginComponent },
   { path: "PLList", component: PLListComponent, canActivate: [MasterGuard], data: { guard: [ReviewerGuard, UserGuard, AdminGuard, PreparerGuard, ApproverGuard] } },

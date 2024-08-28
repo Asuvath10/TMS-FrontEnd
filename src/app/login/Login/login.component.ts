@@ -3,6 +3,7 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
 import { LoginService } from '../login.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -11,6 +12,7 @@ import { LoginService } from '../login.service';
 export class LoginComponent {
   constructor(
     private toastService: HotToastService,
+    private router: Router,
     private http: HttpClient
   ) { }
 
@@ -45,12 +47,13 @@ export class LoginComponent {
         this.toastService.success('Loggedin Successfully');
         setTimeout(() => {
           window.location.replace('/PLList');
-        }, 300);
+        }, 200);
       },
 
       error: (err: any) => {
-        if (err['error'] == 'Unauthorized user') {
-          this.toastService.error(err['error']);
+        console.log(err['error'], "Error")
+        if (err['error'] === 'Invalid credentials') {
+          this.toastService.error("Unauthorized User or Invalid Credential");
         }
       },
     });

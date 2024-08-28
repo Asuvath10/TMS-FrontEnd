@@ -27,15 +27,6 @@ export class PLListComponent implements OnInit {
   userrole = this.Login.getRoleId();
   userName = this.Login.getFullname();
 
-
-  //Proposal Model
-  proposal: any = {
-    id: "",
-    approver: "",
-    AssessmentYear: "",
-    plstatusId: ""
-  }
-
   //New PLRequest 
   newproposal: any = {
     userId: this.currentuserId,
@@ -55,6 +46,8 @@ export class PLListComponent implements OnInit {
   ngOnInit(): void {
     this.getProposals(this.currentuserId);
     console.log(this.userrole, "This is user role");
+    console.log(this.Login.IsUser, "User role");
+
   }
 
   getProposals(userId: number) {
@@ -75,6 +68,7 @@ export class PLListComponent implements OnInit {
     }
     this.getdata.subscribe((res: any) => {
       this.proposalList = res;
+      console.log(this.proposalList, "This is PL");
       this.proposalList.forEach((proposal: any) => {
         if (proposal.assessmentYear == "2024-2025") {
           this.isRequestPL = false;

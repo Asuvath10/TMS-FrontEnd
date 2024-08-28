@@ -100,7 +100,7 @@ export class AssignUserComponent implements OnInit {
     console.log("hi");
     console.log(this.plId, "PL Id");
     console.log(this.PL, "PL content");
-    this.PL.plstatusId = 2;
+    this.PL.plStatus.id = 2;
     this.plService.updatePL(this.plId, this.PL).subscribe({
       next: (res: any) => {
         this.toastService.success("Proposal Letter updated successfully");

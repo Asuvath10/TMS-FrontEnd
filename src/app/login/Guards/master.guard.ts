@@ -44,10 +44,8 @@ export class MasterGuard implements CanActivate {
     if (this.result) {
       return true;
     } else {
-      this.toast.warning("You're Unauthorized");
-      setTimeout(() => {
-        this.router.navigate(['/Login']);
-      }, 500);
+      this.toast.error("You're Unauthorized");
+      this.router.navigate(['/Login']);
       return false;
     }
   }

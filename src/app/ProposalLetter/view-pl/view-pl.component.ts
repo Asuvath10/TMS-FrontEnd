@@ -19,9 +19,9 @@ export class ViewPLComponent implements OnInit {
   proposalLetter: any;
   userDetails: any;
   eSigned: boolean = false;
-  uploadedImage: string | null = null;
+  showImage: boolean = false
   PLforms: any = [];
-  signimage: Blob[] = [];
+  signImage: Blob[] = [];
   plId: number = 0;
   constructor(
     private route: ActivatedRoute,
@@ -61,6 +61,7 @@ export class ViewPLComponent implements OnInit {
     // Fetch user details related to the proposal letter
     this.userService.getUserById(this.proposalLetter.userId).subscribe(details => {
       this.userDetails = details;
+      console.log(this.userDetails, "This is user")
     });
   }
 
@@ -72,81 +73,79 @@ export class ViewPLComponent implements OnInit {
     });
   }
   loadESign() {
+    this.showImage = true;
     console.log(this.proposalLetter.approverSignUrl);
     var mediaType = 'image/png'
     if (this.proposalLetter.approverSignUrl != null) {
       this.plService.DownloadFile(this.proposalLetter.approverSignUrl).subscribe({
         next: (res) => {
-          
+
         },
         error: (err => {
           console.error(err, "File not downloaded");
         })
-    });
+      });
+    }
   }
-}
-sendBackToReviewer() {
-  this.proposalLetter.plstatusId = 3;
-  this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
-    next: (res: any) => {
-      this.toastService.success("Proposal Letter Sent Back To Reviewer");
-      this.RoutetoPLList();
-    },
-    error: (err) => {
-      this.toastService.error("Error on sending back PL to Reviewer");
-    }
-  });
-}
-ApproveProposalLetter() {
-  this.proposalLetter.plstatusId = 5;
-  this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
-    next: () => {
-      this.toastService.success("Proposal Letter Approved Successfully");
-      this.RoutetoPLList();
-    },
-    error: (err) => {
-      this.toastService.error("Error on Approving PL");
-      console.error("Error on updating", err);
-    }
-  });
-}
-RoutetoPLList() {
-  setTimeout(() => {
-    this.router.navigate(['/PLList']);
-  }, 300);
-}
-
-uploadImage(event: any) {
-  const file = event.target.files[0];
-  console.log("Inside the file upload", file)
-  if (file) {
-    // const fileBytes = new Uint8Array(reader.result as ArrayBuffer);
-    console.log(file.type, "Uploaded file type");
-    // Call your upload service method with the byte array
-    this.plService.UploadFile(file).subscribe({
-      next: (res) => {
-        console.log('File uploaded successfully', res.url);
-        this.proposalLetter.approverSignUrl = res.url;
-        this.plService.updatePL(this.plId, this.proposalLetter).subscribe({
-          next: () => {
-            if (this.proposalLetter.approverSignUrl != null) {
-              this.eSigned = true;
-              this.uploadedImage = this.proposalLetter.approverSignUrl;
-            }
-            this.toastService.success("Proposal Letter Updated Successfully");
-          }
-        });
+  sendBackToReviewer() {
+    this.proposalLetter.plstatusId = 3;
+    this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
+      next: (res: any) => {
+        this.toastService.success("Proposal Letter Sent Back To Reviewer");
+        this.RoutetoPLList();
       },
       error: (err) => {
-        console.error('Upload error', err);
+        this.toastService.error("Error on sending back PL to Reviewer");
       }
     });
-
-
-    // Read the file as an ArrayBuffer
-    // reader.readAsArrayBuffer(file);
-  } else {
-    console.error('Please select a file to upload.');
   }
-}
+  ApproveProposalLetter() {
+    this.proposalLetter.plstatusId = 5;
+    this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
+      next: () => {
+        this.toastService.success("Proposal Letter Approved Successfully");
+        this.RoutetoPLList();
+      },
+      error: (err) => {
+        this.toastService.error("Error on Approving PL");
+        console.error("Error on updating", err);
+      }
+    });
+  }
+  RoutetoPLList() {
+    this.router.navigate(['/PLList']);
+  }
+
+  uploadImage(event: any) {
+    const file = event.target.files[0];
+    console.log("Inside the file upload", file)
+    if (file) {
+      // const fileBytes = new Uint8Array(reader.result as ArrayBuffer);
+      console.log(file.type, "Uploaded file type");
+      // Call your upload service method with the byte array
+      this.plService.UploadFile(file).subscribe({
+        next: (res) => {
+          console.log('File uploaded successfully', res.url);
+          this.proposalLetter.approverSignUrl = res.url;
+          this.plService.updatePL(this.plId, this.proposalLetter).subscribe({
+            next: () => {
+              if (this.proposalLetter.approverSignUrl != null) {
+                this.eSigned = true;
+              }
+              this.toastService.success("Proposal Letter Updated Successfully");
+            }
+          });
+        },
+        error: (err) => {
+          console.error('Upload error', err);
+        }
+      });
+
+
+      // Read the file as an ArrayBuffer
+      // reader.readAsArrayBuffer(file);
+    } else {
+      console.error('Please select a file to upload.');
+    }
+  }
 }
