@@ -78,4 +78,5 @@ export class ProposalLetterService {
   DownloadFile(fileUrl: string): Observable<Blob> {
     return this.http.get<Blob>(`http://localhost:5003/api/Document/download?fileUrl=${fileUrl}`, { responseType: 'blob' as 'json' });
   }
+  
 }

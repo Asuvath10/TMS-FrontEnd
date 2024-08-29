@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { baseurl } from 'src/URL';
+import { map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,9 @@ export class UserService {
   ) { }
   getUserById(id: number) {
     return this.http.get(baseurl + `User/${id}`);
+  }
+  getUserNameById(id: number): Observable<any> {
+    return this.http.get<any>(baseurl + `User/${id}`).pipe(map(u => u.name));
   }
   getAllUsers(): Observable<any> {
     return this.http.get<any>(baseurl + `User/Users`)

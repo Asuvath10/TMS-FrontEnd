@@ -77,10 +77,9 @@ export class PLListComponent implements OnInit {
         if (proposal.assessmentYear == "2024-2025") {
           this.isRequestPL = false;
         }
-        this.userService.getUserById(proposal.userId).subscribe((res: any) => {
-          proposal.UserName = res.name;
-        })
-
+        this.userService.getUserNameById(proposal.userId).subscribe((res: any) => {
+          proposal.UserName = res;
+        });
       });
     },
       (error: any) => {

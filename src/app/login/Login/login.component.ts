@@ -46,7 +46,7 @@ export class LoginComponent {
         this.toastService.success('Loggedin Successfully');
         setTimeout(() => {
           window.location.replace('/PLList');
-        }, 300);
+        }, 200);
       },
 
       error: (err: any) => {
