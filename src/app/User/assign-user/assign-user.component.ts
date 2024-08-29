@@ -4,6 +4,8 @@ import { ProposalLetterService } from 'src/app/ProposalLetter/proposal-letter.se
 import { UserService } from '../user.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
+import { PLStatus } from 'src/app/Models/PLStatus';
+import { Role } from 'src/app/Models/Role';
 
 @Component({
   selector: 'app-assign-user',
@@ -23,26 +25,19 @@ export class AssignUserComponent implements OnInit {
   plId = 0;
   //Get PL
   proposalLetter: any;
-
+  // Enum PlStatus
+  plstatus = PLStatus;
+  // Enum role
+  role = Role;
   //Update proposalLetter
   PL: any = {
-    // id: 0,
-    // userId: '',
     preparerId: 0,
     reviewerId: 0,
-    approverId: 0,
-    // assessmentYear: '',
-    // //Setting up status to preparing
-    // plstatusId: 0,
-    // createdOn: '',
-    // createdBy: ''
+    approverId: 0
   }
 
   //Get user details
   userDetails: any = [];
-  // preparerId = 0;
-  // reviewerId = 0;
-  // ApproverId = 0;
   //Get all reviewer
   reviewerList: any = [];
   //Get all Preparer
@@ -81,26 +76,25 @@ export class AssignUserComponent implements OnInit {
     });
   }
   LoadPreparerList() {
-    this.userService.getAllUsersByRoleId(3).subscribe(preparer => {
+    // 
+    this.userService.getAllUsersByRoleId(Role.Preparer).subscribe(preparer => {
       this.preparerList = preparer;
     });
   }
   LoadreviewerList() {
-    this.userService.getAllUsersByRoleId(4).subscribe(reviewer => {
+    this.userService.getAllUsersByRoleId(Role.Reviewer).subscribe(reviewer => {
       this.reviewerList = reviewer;
     });
   }
   LoadApproverList() {
-    this.userService.getAllUsersByRoleId(5).subscribe(approver => {
+    this.userService.getAllUsersByRoleId(Role.Approver).subscribe(approver => {
       this.ApproverList = approver;
     });
   }
-  
+
   OnSubmit() {
-    console.log("hi");
-    console.log(this.plId, "PL Id");
     console.log(this.PL, "PL content");
-    this.PL.plStatus.id = 2;
+    this.PL.plstatusId = this.plstatus.Preparing;
     this.plService.updatePL(this.plId, this.PL).subscribe({
       next: (res: any) => {
         this.toastService.success("Proposal Letter updated successfully");

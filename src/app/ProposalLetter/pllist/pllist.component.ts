@@ -5,6 +5,8 @@ import { LoginService } from 'src/app/login/login.service';
 import { ProposalLetterService } from '../proposal-letter.service';
 import { Router } from '@angular/router';
 import { saveAs } from 'file-saver';
+import { PLStatus } from 'src/app/Models/PLStatus';
+import { UserService } from 'src/app/User/user.service';
 
 @Component({
   selector: 'app-pllist',
@@ -18,9 +20,12 @@ export class PLListComponent implements OnInit {
     public Login: LoginService,
     private PLService: ProposalLetterService,
     private toastService: HotToastService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) { }
 
+  //Enum PLstatus
+  plStatus = PLStatus;
   //Current user
   currentuserId = this.Login.getId();
   //Current role
@@ -47,7 +52,6 @@ export class PLListComponent implements OnInit {
     this.getProposals(this.currentuserId);
     console.log(this.userrole, "This is user role");
     console.log(this.Login.IsUser, "User role");
-
   }
 
   getProposals(userId: number) {
@@ -73,6 +77,10 @@ export class PLListComponent implements OnInit {
         if (proposal.assessmentYear == "2024-2025") {
           this.isRequestPL = false;
         }
+        this.userService.getUserById(proposal.userId).subscribe((res: any) => {
+          proposal.UserName = res.name;
+        })
+
       });
     },
       (error: any) => {

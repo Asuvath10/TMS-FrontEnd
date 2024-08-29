@@ -27,8 +27,10 @@
         <h4>Approve with E-signature</h4>
         <input type="file" (change)="uploadImage($event)" />
     </div>
-
-    <img *ngIf="showImage" [src]="signImage" alt="Uploaded sign" class="thumbnail" />
+    <div *ngIf="showImage">
+        <h2> Approver Sign</h2>
+        <img [src]="signImage" alt="Uploaded sign" class="thumbnail" />
+    </div>
     <div>
         <div class="row pt-3" *ngIf="isApprover">
             <div *ngIf="!isReviewerLess" class="px-3">

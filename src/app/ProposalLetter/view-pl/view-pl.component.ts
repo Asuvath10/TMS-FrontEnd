@@ -5,6 +5,7 @@ import { UserService } from 'src/app/User/user.service';
 import { LoginService } from 'src/app/login/login.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { DomSanitizer } from '@angular/platform-browser';
+import { PLStatus } from 'src/app/Models/PLStatus';
 
 @Component({
   selector: 'app-view-pl',
@@ -12,6 +13,8 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./view-pl.component.css']
 })
 export class ViewPLComponent implements OnInit {
+  // Enum plStatus
+  plstatus = PLStatus;
   forms: any[] = [];
   SelectedForm: any;
   isApprover: boolean = false;
@@ -24,7 +27,9 @@ export class ViewPLComponent implements OnInit {
   PLforms: any = [];
   signImage: any;
   plId: number = 0;
+  // Boolean for reviewer flow
   isReviewerLess: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private plService: ProposalLetterService,
@@ -46,7 +51,7 @@ export class ViewPLComponent implements OnInit {
     this.plService.getPLById(this.plId).subscribe(pl => {
       this.proposalLetter = pl;
       console.log(this.proposalLetter, "MyPL")
-      if (this.proposalLetter.plstatusId === 4 && (this.loginService.IsApprover)) {
+      if (this.proposalLetter.plstatusId === this.plstatus.Approved && (this.loginService.IsApprover)) {
         this.isApprover = true;
       }
       if (this.proposalLetter.approverSignUrl != null) {
@@ -98,7 +103,7 @@ export class ViewPLComponent implements OnInit {
     }
   }
   sendBackToReviewer() {
-    this.proposalLetter.plstatusId = 3;
+    this.proposalLetter.plstatusId = this.plstatus.MovetoReview;
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
       next: (res: any) => {
         this.toastService.success("Proposal Letter Sent Back To Reviewer");
@@ -110,7 +115,7 @@ export class ViewPLComponent implements OnInit {
     });
   }
   sendBackToPreparer() {
-    this.proposalLetter.plstatusId = 2;
+    this.proposalLetter.plstatusId = this.plstatus.Preparing;
     this.proposalLetter.draft = false;
     console.log(this.proposalLetter, "Sending back to Preparer");
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
@@ -125,7 +130,7 @@ export class ViewPLComponent implements OnInit {
     });
   }
   ApproveProposalLetter() {
-    this.proposalLetter.plstatusId = 5;
+    this.proposalLetter.plstatusId = this.plstatus.Approved;
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
       next: () => {
         this.toastService.success("Proposal Letter Approved Successfully");
@@ -147,7 +152,7 @@ export class ViewPLComponent implements OnInit {
     if (file) {
       // const fileBytes = new Uint8Array(reader.result as ArrayBuffer);
       console.log(file.type, "Uploaded file type");
-      // Call your upload service method with the byte array
+      // Call firebase cloud service with the byte array
       this.plService.UploadFile(file).subscribe({
         next: (res) => {
           console.log('File uploaded successfully', res.url);
@@ -158,6 +163,7 @@ export class ViewPLComponent implements OnInit {
                 this.eSigned = true;
               }
               this.toastService.success("Proposal Letter Updated Successfully");
+              this.loadESign();
             }
           });
         },
@@ -165,8 +171,6 @@ export class ViewPLComponent implements OnInit {
           console.error('Upload error', err);
         }
       });
-
-
       // Read the file as an ArrayBuffer
       // reader.readAsArrayBuffer(file);
     } else {
