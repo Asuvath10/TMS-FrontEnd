@@ -1,22 +1,24 @@
 <div class="container-fluid">
     <app-logout></app-logout>
     <h2>Users</h2>
-    <table class="col-md-10 pb-3 table table-striped">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Pan</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of UserList">
-                <td>{{ user.name }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.roleId }}</td>
-                <td>{{user.pan}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-scrollable">
+        <table class="col-md-10 pb-3 table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Pan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of UserList">
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.roleId }}</td>
+                    <td>{{user.pan}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

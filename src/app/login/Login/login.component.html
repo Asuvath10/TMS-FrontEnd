@@ -9,8 +9,7 @@
                     <div *ngIf="loginform.controls['email'].invalid && (loginform.controls['email'].dirty || loginform.controls['email'].touched)"
                         class="alert alert-danger">
                         <div *ngIf="loginform.controls['email'].errors?.['required']">Email is required.</div>
-                        <div *ngIf="loginform.controls['email'].errors?.['minlength']">Email must be atleast 4
-                            characters long.</div>
+                        <div *ngIf="loginform.controls['email'].errors?.['minlength']">Atleast 4 characters</div>
                         <div *ngIf="loginform.controls['email'].errors?.['maxlength']">Email should not exceed 30
                             characters.</div>
                         <div
@@ -25,13 +24,13 @@
                         class="alert alert-danger">
                         <div *ngIf="loginform.controls['password'].errors?.['required']">Password is required.
                         </div>
-                        <div *ngIf="loginform.controls['password'].errors?.['minlength']">Password must be at
-                            least 4 characters long.</div>
+                        <div *ngIf="loginform.controls['password'].errors?.['minlength']">Atleast 4 characters long.
+                        </div>
                         <div *ngIf="loginform.controls['password'].errors?.['maxlength']">Password should not
                             exceed 30 characters.</div>
                         <div
                             *ngIf="loginform.controls['password'].invalid || loginform.controls['password'].errors?.['maxlength']">
-                            Please enter a valid Password</div>
+                            Enter valid Password</div>
                     </div>
                     <a routerLink="/Registration"><small>NewUser?</small>
                     </a>

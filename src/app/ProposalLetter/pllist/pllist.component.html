@@ -13,50 +13,52 @@
         </div>
     </div>
     <app-logout></app-logout>
-    <table class="pb-3 table">
-        <thead>
-            <tr>
-                <th>PLID</th>
-                <th>UserName</th>
-                <th>Assessment Year</th>
-                <th>Status</th>
-                <th>Created On</th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let proposal of proposalList">
-                <td>{{ proposal.id }}</td>
-                <td>{{ proposal.UserName }}</td>
-                <td>{{ proposal.assessmentYear }}</td>
-                <td>{{ proposal?.plStatus?.status }}</td>
-                <td>{{proposal?.createdOn | date: 'yyyy-MM-dd'}}</td>
-                <td>
-                    <a class="btn btn-info btn-sm" *ngIf="proposal.plstatusId === plStatus.Approved"
-                        (click)="ExportPDF(proposal.id)">Export PDF</a>
-                </td>
-                <td *ngIf="proposal.plstatusId === plStatus.Approved">
-                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/ViewPL">View Details</a>
-                </td>
-                <td *ngIf="Login.IsPreparer && proposal.plstatusId === plStatus.Preparing">
-                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/PLcrud">Prepare</a>
-                </td>
-                <td *ngIf="Login.IsReviewer && proposal.plstatusId === plStatus.MovetoReview">
-                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/PLcrud">Review</a>
-                </td>
-                <td *ngIf="Login.IsReviewer && proposal.plStatusId === plStatus.MovetoReview && proposal.draft">
-                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/ViewPL">View Details</a>
-                </td>
-                <td
-                    *ngIf="Login.IsApprover && (proposal.plstatusId === plStatus.Preparing || proposal.plstatusId === plStatus.MovetoReview) && proposal.draft">
-                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/ViewPL">View Details</a>
-                </td>
-                <td *ngIf="Login.IsApprover && proposal.plstatusId === plStatus.PendingApproval">
-                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/ViewPL">Approve</a>
-                </td>
-            </tr>
-            <div *ngIf="proposalList.length === 0">No Data Found</div>
-        </tbody>
-    </table>
+    <div class="table-scrollable">
+        <table class="pb-3 table table-bordered">
+            <thead>
+                <tr>
+                    <th>PLID</th>
+                    <th>UserName</th>
+                    <th>Assessment Year</th>
+                    <th>Status</th>
+                    <th>Created On</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let proposal of proposalList">
+                    <td>{{ proposal.id }}</td>
+                    <td>{{ proposal.UserName }}</td>
+                    <td>{{ proposal.assessmentYear }}</td>
+                    <td>{{ proposal?.plStatus?.status }}</td>
+                    <td>{{proposal?.createdOn | date: 'yyyy-MM-dd'}}</td>
+                    <td>
+                        <a class="btn btn-info btn-sm" *ngIf="proposal.plstatusId === plStatus.Approved"
+                            (click)="ExportPDF(proposal.id)">Export PDF</a>
+                    </td>
+                    <td *ngIf="proposal.plstatusId === plStatus.Approved">
+                        <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/ViewPL">View Details</a>
+                    </td>
+                    <td *ngIf="Login.IsPreparer && proposal.plstatusId === plStatus.Preparing">
+                        <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/PLcrud">Prepare</a>
+                    </td>
+                    <td *ngIf="Login.IsReviewer && proposal.plstatusId === plStatus.MovetoReview">
+                        <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/PLcrud">Review</a>
+                    </td>
+                    <td *ngIf="Login.IsReviewer && proposal.plStatusId === plStatus.MovetoReview && proposal.draft">
+                        <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/ViewPL">View Details</a>
+                    </td>
+                    <td
+                        *ngIf="Login.IsApprover && (proposal.plstatusId === plStatus.Preparing || proposal.plstatusId === plStatus.MovetoReview) && proposal.draft">
+                        <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/ViewPL">View Details</a>
+                    </td>
+                    <td *ngIf="Login.IsApprover && proposal.plstatusId === plStatus.PendingApproval">
+                        <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/ViewPL">Approve</a>
+                    </td>
+                </tr>
+                <div *ngIf="proposalList.length === 0">No Data Found</div>
+            </tbody>
+        </table>
+    </div>
 </div>
