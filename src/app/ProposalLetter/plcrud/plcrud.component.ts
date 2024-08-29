@@ -66,8 +66,6 @@ export class PLCRUDComponent implements OnInit {
       if (this.proposalLetter.reviewerId == null || this.proposalLetter.reviewerId === 0) {
         this.isReviewerLess = true;
       }
-      // if(this.proposalLetter.reviewerId)
-      // this.forms = this.proposalLetter.forms || [];
       this.loadUserDetails();
       this.loadFormDetails();
     });
@@ -84,7 +82,6 @@ export class PLCRUDComponent implements OnInit {
     //Fetch forms for the current pl
     this.plService.getallFormsByPLId(this.plId).subscribe((formdata: any) => {
       this.PLforms = formdata;
-      console.log(this.PLforms, "Myforms");
       this.initializeForms();
     });
   }
@@ -109,7 +106,7 @@ export class PLCRUDComponent implements OnInit {
         this.formGroupArray[index].value.id = res;
         setTimeout(() => {
           window.location.replace(`/PLList/${this.plId}/PLcrud`);
-        }, 300);
+        }, 350);
       },
       error: (err) => {
         console.log(err);
@@ -122,7 +119,7 @@ export class PLCRUDComponent implements OnInit {
       this.toastService.success("Form Deleted successfully");
       setTimeout(() => {
         window.location.replace(`/PLList/${this.plId}/PLcrud`);
-      }, 300);
+      }, 350);
     });
   }
   addNewForm() {
@@ -141,10 +138,8 @@ export class PLCRUDComponent implements OnInit {
   SendtoReviewer() {
     this.proposalLetter.plstatusId = PLStatus.MovetoReview;
     this.proposalLetter.draft = 0;
-    console.log(this.proposalLetter, "Sending to reviewer");
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
       next: (res: any) => {
-        console.log(this.proposalLetter);
         this.toastService.success("Proposal Letter Sent to Review");
         this.RoutetoPLList();
       },
@@ -171,7 +166,6 @@ export class PLCRUDComponent implements OnInit {
   sendBackToReviewer() {
     this.proposalLetter.plstatusId = 3;
     this.proposalLetter.draft = false;
-    console.log(this.proposalLetter, "Sending back to reviewer");
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
       next: (res: any) => {
         this.toastService.success("Proposal Letter Sent Back To Reviewer");
@@ -186,7 +180,6 @@ export class PLCRUDComponent implements OnInit {
   sendBackToPreparer() {
     this.proposalLetter.plstatusId = 2;
     this.proposalLetter.draft = false;
-    console.log(this.proposalLetter, "Sending back to Preparer");
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
       next: (res: any) => {
         this.toastService.success("Proposal Letter Sent Back To Preparer");
@@ -213,7 +206,6 @@ export class PLCRUDComponent implements OnInit {
   }
   SetAsDraft() {
     this.proposalLetter.draft = true;
-    console.log(this.proposalLetter, "Set to draft");
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
       next: () => {
         this.toastService.success("Proposal Letter Set to Draft");

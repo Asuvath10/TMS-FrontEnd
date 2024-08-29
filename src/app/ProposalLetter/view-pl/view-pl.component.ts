@@ -44,14 +44,12 @@ export class ViewPLComponent implements OnInit {
     this.plId = this.route.snapshot.params['PLId'];
     this.userId = this.loginService.getId();
     this.userRole = this.loginService.getRole();
-    console.log(this.userId);
     this.loadProposalLetter();
   }
   loadProposalLetter() {
     this.plService.getPLById(this.plId).subscribe(pl => {
       this.proposalLetter = pl;
-      console.log(this.proposalLetter, "MyPL")
-      if (this.proposalLetter.plstatusId === this.plstatus.Approved && (this.loginService.IsApprover)) {
+      if (this.proposalLetter.plstatusId === this.plstatus.PendingApproval && (this.loginService.IsApprover)) {
         this.isApprover = true;
       }
       if (this.proposalLetter.approverSignUrl != null) {
@@ -72,7 +70,6 @@ export class ViewPLComponent implements OnInit {
     // Fetch user details related to the proposal letter
     this.userService.getUserById(this.proposalLetter.userId).subscribe(details => {
       this.userDetails = details;
-      console.log(this.userDetails, "This is user")
     });
   }
 
@@ -80,12 +77,10 @@ export class ViewPLComponent implements OnInit {
     //Fetch forms for the current pl
     this.plService.getallFormsByPLId(this.plId).subscribe((formdata: any) => {
       this.PLforms = formdata;
-      console.log(this.PLforms, "This is form");
     });
   }
   loadESign() {
     this.showImage = true;
-    console.log(this.proposalLetter.approverSignUrl);
     var mediaType = 'image/png'
     if (this.proposalLetter.approverSignUrl != null) {
       this.plService.DownloadFile(this.proposalLetter.approverSignUrl).subscribe({
@@ -94,7 +89,6 @@ export class ViewPLComponent implements OnInit {
           const blob = new Blob([res], { type: mediaType });
           const blobURL = URL.createObjectURL(blob);
           this.signImage = this.sanitizer.bypassSecurityTrustUrl(blobURL) as string;
-          console.log(this.signImage);
         },
         error: (err => {
           console.error(err, "File not downloaded");
@@ -148,14 +142,10 @@ export class ViewPLComponent implements OnInit {
 
   uploadImage(event: any) {
     const file = event.target.files[0];
-    console.log("Inside the file upload", file)
     if (file) {
-      // const fileBytes = new Uint8Array(reader.result as ArrayBuffer);
-      console.log(file.type, "Uploaded file type");
       // Call firebase cloud service with the byte array
       this.plService.UploadFile(file).subscribe({
         next: (res) => {
-          console.log('File uploaded successfully', res.url);
           this.proposalLetter.approverSignUrl = res.url;
           this.plService.updatePL(this.plId, this.proposalLetter).subscribe({
             next: () => {
@@ -171,8 +161,6 @@ export class ViewPLComponent implements OnInit {
           console.error('Upload error', err);
         }
       });
-      // Read the file as an ArrayBuffer
-      // reader.readAsArrayBuffer(file);
     } else {
       console.error('Please select a file to upload.');
     }

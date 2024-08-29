@@ -24,7 +24,7 @@
         </div>
     </div>
     <div *ngIf="isApprover && (!eSigned)" class="pb-3">
-        <h4>Approve with E-signature</h4>
+        <h4><b>Approve with E-signature</b></h4>
         <input type="file" (change)="uploadImage($event)" />
     </div>
     <div *ngIf="showImage">

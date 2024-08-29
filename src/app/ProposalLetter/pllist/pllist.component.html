@@ -39,9 +39,6 @@
                 <td *ngIf="proposal.plstatusId === plStatus.Approved">
                     <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/ViewPL">View Details</a>
                 </td>
-                <!-- <td *ngIf="userrole === '3'">
-                    <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/ViewPL">View Details</a>
-                </td> -->
                 <td *ngIf="Login.IsPreparer && proposal.plstatusId === plStatus.Preparing">
                     <a class="btn btn-info btn-sm" routerLink="./{{proposal.id}}/PLcrud">Prepare</a>
                 </td>

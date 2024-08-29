@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HotToastService } from '@ngneat/hot-toast';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
@@ -11,7 +12,8 @@ export class RegistrationComponent {
 
   constructor(
     private toastService: HotToastService,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) { }
 
   //model for Registration
@@ -64,13 +66,8 @@ export class RegistrationComponent {
   OnSubmit() {
     this.http.post('http://localhost:5004/api/Registration', this.Registration).subscribe({
       next: (res: any) => {
-        console.log(res);
-
         this.toastService.success('User Registered Successfully');
-
-        setTimeout(() => {
-          window.location.replace('/Login');
-        }, 500);
+        this.router.navigate(['/Login']);
       },
 
       error: (err: any) => {

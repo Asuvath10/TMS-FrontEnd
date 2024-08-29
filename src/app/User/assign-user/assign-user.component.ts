@@ -45,13 +45,6 @@ export class AssignUserComponent implements OnInit {
   //Get all Approver
   ApproverList: any = [];
 
-  // //UserAssigning for PL form
-  // PLform = new FormGroup({
-  //   preparerId: new FormControl(['', Validators.required]),
-  //   reviewerId: new FormControl(['']),
-  //   approverId: new FormControl(['', Validators.required])
-  // });
-
   ngOnInit(): void {
     this.plId = this.route.snapshot.params['PLId'];
 
@@ -62,7 +55,6 @@ export class AssignUserComponent implements OnInit {
     this.plService.getPLById(this.plId).subscribe(pl => {
       this.proposalLetter = pl;
       this.PL = pl;
-      console.log(pl, "This is pl");
       this.loadUserDetails();
       this.LoadApproverList();
       this.LoadPreparerList();
@@ -76,7 +68,6 @@ export class AssignUserComponent implements OnInit {
     });
   }
   LoadPreparerList() {
-    // 
     this.userService.getAllUsersByRoleId(Role.Preparer).subscribe(preparer => {
       this.preparerList = preparer;
     });
@@ -93,7 +84,6 @@ export class AssignUserComponent implements OnInit {
   }
 
   OnSubmit() {
-    console.log(this.PL, "PL content");
     this.PL.plstatusId = this.plstatus.Preparing;
     this.plService.updatePL(this.plId, this.PL).subscribe({
       next: (res: any) => {
