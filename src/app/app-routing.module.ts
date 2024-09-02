@@ -17,8 +17,8 @@ import { AssignUserComponent } from './User/assign-user/assign-user.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "Login", pathMatch: "full" },
-  { path: "Login", component: LoginComponent },
   { path: "login", component: LoginComponent },
+  { path: "Login", component: LoginComponent },
   { path: "PLList", component: PLListComponent, canActivate: [MasterGuard], data: { guard: [ReviewerGuard, UserGuard, AdminGuard, PreparerGuard, ApproverGuard] } },
   { path: "PLList/:PLId/PLcrud", component: PLCRUDComponent },
   { path: "PLList/:PLId/ViewPL", component: ViewPLComponent },

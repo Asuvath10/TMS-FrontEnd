@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="form-outline mb-3"><input type="password" class="form-control" name="Password"
-                        [(ngModel)]="Login.password" formControlName="password" placeholder="eg : John1234">
+                        [(ngModel)]="Login.Password" formControlName="password" placeholder="eg : John1234">
                     <div *ngIf="loginform.controls['password'].invalid && (loginform.controls['password'].dirty || loginform.controls['password'].touched)"
                         class="alert alert-danger">
                         <div *ngIf="loginform.controls['password'].errors?.['required']">Password is required.

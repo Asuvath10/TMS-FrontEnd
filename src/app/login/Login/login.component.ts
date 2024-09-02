@@ -40,12 +40,12 @@ export class LoginComponent {
 
   //On Button click event
   OnSubmit() {
-    this.http.post('http://localhost:5004/api/Authentication/login', this.Login).subscribe({
+    this.http.post('https://localhost:5005/api/Authentication/login', this.Login).subscribe({
       next: (res: any) => {
         localStorage.setItem('Token', res.token);
         this.toastService.success('Loggedin Successfully');
         setTimeout(() => {
-          window.location.replace('/PLList');
+          this.router.navigate(['PLList']);
         }, 200);
       },
 
@@ -57,5 +57,4 @@ export class LoginComponent {
       },
     });
   }
-
 }

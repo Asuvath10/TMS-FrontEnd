@@ -6,6 +6,7 @@ import { UserService } from 'src/app/User/user.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PLStatus } from 'src/app/Models/PLStatus';
+import { DomSanitizer } from '@angular/platform-browser';
 
 // import ClassicEditor, * as ClasicEditor from '@ckeditor/ckeditor5-build-classic';
 
@@ -32,6 +33,9 @@ export class PLCRUDComponent implements OnInit {
   canESign: boolean = false;
   selectedform: any;
   isReviewerLess: boolean = false;
+  eSigned: boolean = false;
+  showImage: boolean = false;
+  signImage: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,7 +44,9 @@ export class PLCRUDComponent implements OnInit {
     private userService: UserService,
     public toastService: HotToastService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
+
   ) { }
 
   ngOnInit(): void {
@@ -53,7 +59,6 @@ export class PLCRUDComponent implements OnInit {
   loadProposalLetter() {
     this.plService.getPLById(this.plId).subscribe(pl => {
       this.proposalLetter = pl;
-      console.log(this.proposalLetter);
       if (this.proposalLetter.plstatusId === PLStatus.Preparing && this.loginservice.IsPreparer) {
         this.isPreparer = true;
       }
@@ -66,8 +71,14 @@ export class PLCRUDComponent implements OnInit {
       if (this.proposalLetter.reviewerId == null || this.proposalLetter.reviewerId === 0) {
         this.isReviewerLess = true;
       }
+      if (this.proposalLetter.approverSignUrl != null) {
+        this.eSigned = true;
+      }
       this.loadUserDetails();
       this.loadFormDetails();
+      if (this.eSigned) {
+        this.loadESign();
+      }
     });
   }
 
@@ -137,7 +148,7 @@ export class PLCRUDComponent implements OnInit {
   }
   SendtoReviewer() {
     this.proposalLetter.plstatusId = PLStatus.MovetoReview;
-    this.proposalLetter.draft = 0;
+    this.proposalLetter.draft = false;
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
       next: (res: any) => {
         this.toastService.success("Proposal Letter Sent to Review");
@@ -150,8 +161,8 @@ export class PLCRUDComponent implements OnInit {
     });
   }
   SendtoApprover() {
-    this.proposalLetter.plstatusId = 4;
-    this.proposalLetter.draft = 0;
+    this.proposalLetter.plstatusId = PLStatus.PendingApproval;
+    this.proposalLetter.draft = false;
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
       next: (res: any) => {
         this.toastService.success("Proposal Letter Sent to Approver");
@@ -164,7 +175,7 @@ export class PLCRUDComponent implements OnInit {
     });
   }
   sendBackToReviewer() {
-    this.proposalLetter.plstatusId = 3;
+    this.proposalLetter.plstatusId = PLStatus.MovetoReview;
     this.proposalLetter.draft = false;
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
       next: (res: any) => {
@@ -178,7 +189,7 @@ export class PLCRUDComponent implements OnInit {
     });
   }
   sendBackToPreparer() {
-    this.proposalLetter.plstatusId = 2;
+    this.proposalLetter.plstatusId = PLStatus.Preparing;
     this.proposalLetter.draft = false;
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
       next: (res: any) => {
@@ -192,7 +203,7 @@ export class PLCRUDComponent implements OnInit {
     });
   }
   ApproveProposalLetter() {
-    this.proposalLetter.plstatusId = 5;
+    this.proposalLetter.plstatusId = PLStatus.Approved;
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
       next: () => {
         this.toastService.success("Proposal Letter Approved Successfully");
@@ -204,19 +215,60 @@ export class PLCRUDComponent implements OnInit {
       }
     });
   }
-  SetAsDraft() {
-    this.proposalLetter.draft = true;
-    this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
-      next: () => {
-        this.toastService.success("Proposal Letter Set to Draft");
-        this.RoutetoPLList();
-      },
-      error: (err) => {
-        this.toastService.error("Error on Set to draft PL");
-        console.error("Error on updating", err);
-      }
-    });
+  loadESign() {
+    this.showImage = true;
+    var mediaType = 'image/png'
+    if (this.proposalLetter.approverSignUrl != null) {
+      this.plService.DownloadFile(this.proposalLetter.approverSignUrl).subscribe({
+        next: (res) => {
+          const blob = new Blob([res], { type: mediaType });
+          const blobURL = URL.createObjectURL(blob);
+          this.signImage = this.sanitizer.bypassSecurityTrustUrl(blobURL) as string;
+        },
+        error: (err => {
+          console.error(err, "File not downloaded");
+        })
+      });
+    }
   }
+  uploadImage(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      // Call firebase cloud service with the byte array
+      this.plService.UploadFile(file).subscribe({
+        next: (res) => {
+          this.proposalLetter.approverSignUrl = res.url;
+          this.plService.updatePL(this.plId, this.proposalLetter).subscribe({
+            next: () => {
+              if (this.proposalLetter.approverSignUrl != null) {
+                this.eSigned = true;
+              }
+              this.toastService.success("Proposal Letter Updated Successfully");
+              this.loadESign();
+            }
+          });
+        },
+        error: (err) => {
+          console.error('Upload error', err);
+        }
+      });
+    } else {
+      console.error('Please select a file to upload.');
+    }
+  }
+  // SetAsDraft() {
+  //   this.proposalLetter.draft = true;
+  //   this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
+  //     next: () => {
+  //       this.toastService.success("Proposal Letter Set to Draft");
+  //       this.RoutetoPLList();
+  //     },
+  //     error: (err) => {
+  //       this.toastService.error("Error on Set to draft PL");
+  //       console.error("Error on updating", err);
+  //     }
+  //   });
+  // }
   LogOut() {
     localStorage.clear();
     this.router.navigate(['/Login']);

@@ -59,7 +59,6 @@ export class LoginService {
   }
   getFullname() {
     if (this.getToken() != undefined) {
-      console.log(this.DecodedToken.FullName);
       return this.DecodedToken.FullName;
     } else {
       return '';

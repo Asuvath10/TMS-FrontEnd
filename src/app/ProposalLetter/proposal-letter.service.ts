@@ -73,10 +73,10 @@ export class ProposalLetterService {
   UploadFile(data: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', data);
-    return this.http.put<any>(`http://localhost:5003/api/Document/upload`, data);
+    return this.http.put<any>(`https://localhost:5003/api/Document/upload`, data);
   }
   DownloadFile(fileUrl: string): Observable<Blob> {
-    return this.http.get<Blob>(`http://localhost:5003/api/Document/download?fileUrl=${fileUrl}`, { responseType: 'blob' as 'json' });
+    return this.http.get<Blob>(`https://localhost:5003/api/Document/download?fileUrl=${fileUrl}`, { responseType: 'blob' as 'json' });
   }
-  
+
 }

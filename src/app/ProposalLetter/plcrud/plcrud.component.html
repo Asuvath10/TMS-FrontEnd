@@ -17,33 +17,54 @@
         <p>assessmentYear: {{ proposalLetter?.assessmentYear }}</p>
     </div>
     <!-- form List -->
-    <div *ngFor="let form of PLforms;let i = index">
-        <form [formGroup]="formGroupArray[i]" class="form pb-4">
-            <mat-form-field class="form-content">
-                <mat-label>Form Name</mat-label>
-                <input matInput placeholder="Ex: Form 16 a" formControlName="name">
-            </mat-form-field>
+    <div *ngIf="isPreparer || isReviewer">
+        <div *ngFor="let form of PLforms;let i = index">
+            <form [formGroup]="formGroupArray[i]" class="form pb-4">
+                <mat-form-field class="form-content">
+                    <mat-label>Form Name</mat-label>
+                    <input matInput placeholder="Ex: Form 16 a" formControlName="name">
+                </mat-form-field>
 
-            <mat-form-field class="form-content">
-                <mat-label>Form Content</mat-label>
-                <textarea matInput placeholder="Ex. The Form Details..." formControlName="content"></textarea>
-            </mat-form-field>
-            <div class="row pe-5">
-                <div class="px-4">
-                    <button class="btn btn-dark" (click)="saveForm(i)">Save Form </button>
+                <mat-form-field class="form-content">
+                    <mat-label>Form Content</mat-label>
+                    <textarea matInput placeholder="Ex. The Form Details..." formControlName="content"></textarea>
+                </mat-form-field>
+                <div class="row pe-5">
+                    <div class="px-4">
+                        <button class="btn btn-dark" (click)="saveForm(i)">Save Form </button>
+                    </div>
+                    <div class="px-4">
+                        <button class="btn btn-danger" (click)="deleteForm(i)">delete Form </button>
+                    </div>
                 </div>
-                <div class="px-4">
-                    <button class="btn btn-danger" (click)="deleteForm(i)">delete Form </button>
+            </form>
+        </div>
+        <div class="pb-3">
+            <a (click)="addNewForm()"><u>
+                    + Add Form
+                </u></a>
+        </div>
+    </div>
+    <div *ngIf="isApprover">
+        <div *ngFor="let form of PLforms">
+            <div class="row mt-4">
+                <div class="col-md-2"><b class="text-dark">{{form.name}}</b></div>
+                <div class="col-md-8">
+                    <p>{{form.content}}</p>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
-    <div class="pb-3">
-        <a (click)="addNewForm()"><u>
-                + Add Form
-            </u></a>
-    </div>
+    <h2 *ngIf="PLforms.length === 0"> No Form Content Is Created</h2>
 
+    <div *ngIf="isApprover && (!eSigned)" class="pb-3">
+        <h4><b>Approve with E-signature</b></h4>
+        <input type="file" (change)="uploadImage($event)" />
+    </div>
+    <div class="pb-3" *ngIf="showImage">
+        <h2> Approver Sign</h2>
+        <img [src]="signImage" alt="Uploaded sign" class="thumbnail" />
+    </div>
     <div>
         <div class="row">
             <div class="px-4" *ngIf="isPreparer && !isReviewerLess">
@@ -61,17 +82,17 @@
                 </div>
             </div>
             <div class="row " *ngIf="isApprover">
-                <div *ngIf="!isReviewerLess">
+                <div class="px-4" *ngIf="!isReviewerLess">
                     <button class="btn btn-info" (click)="sendBackToReviewer()">Send Back to Reviewer</button>
                 </div>
-                <div *ngIf="isReviewerLess">
+                <div class="px-4" *ngIf="isReviewerLess">
                     <button class="btn btn-info" (click)="sendBackToPreparer()">Send Back to Preparer</button>
                 </div>
-                <button class="btn btn-info" (click)="ApproveProposalLetter()">Set as Approved</button>
+                <button class="btn btn-info" (click)="ApproveProposalLetter()" [disabled]="!eSigned">Set as Approved</button>
             </div>
-            <div class="px-4" *ngIf="isPreparer || isReviewer">
+            <!-- <div class="px-4" *ngIf="isPreparer || isReviewer">
                 <button class="btn btn-info" (click)="SetAsDraft()">Save as draft</button>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

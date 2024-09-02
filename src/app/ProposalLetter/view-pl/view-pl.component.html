@@ -23,15 +23,24 @@
             </div>
         </div>
     </div>
-    <div *ngIf="isApprover && (!eSigned)" class="pb-3">
+    <h2 class="d-flex justify-content-center align-items-center" *ngIf="PLforms.length === 0">Form Content Not Yet
+        Created</h2>
+    <!-- <div *ngIf="isApprover && (!eSigned)" class="pb-3">
         <h4><b>Approve with E-signature</b></h4>
         <input type="file" (change)="uploadImage($event)" />
+    </div> -->
+    <div *ngIf="this.proposalLetter.plstatusId === plstatus.PendingApproval || this.proposalLetter.plstatusId === plstatus.Approved ">
+        <h2> Approver Sign</h2>
     </div>
     <div *ngIf="showImage">
-        <h2> Approver Sign</h2>
         <img [src]="signImage" alt="Uploaded sign" class="thumbnail" />
     </div>
-    <div>
+    <div *ngIf="this.proposalLetter.plstatusId === plstatus.PendingApproval">
+        <div *ngIf="!showImage">
+            Not Yet Signed
+        </div>
+    </div>
+    <!-- <div>
         <div class="row pt-3" *ngIf="isApprover">
             <div *ngIf="!isReviewerLess" class="px-3">
                 <button class="btn btn-info" (click)="sendBackToReviewer()">Send Back to Reviewer</button>
@@ -43,5 +52,5 @@
                 Approved</button>
 
         </div>
-    </div>
+    </div> -->
 </div>

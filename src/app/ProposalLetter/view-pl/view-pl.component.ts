@@ -37,7 +37,8 @@ export class ViewPLComponent implements OnInit {
     public loginService: LoginService,
     private toastService: HotToastService,
     private router: Router,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+
   ) { }
 
   ngOnInit(): void {
@@ -85,7 +86,6 @@ export class ViewPLComponent implements OnInit {
     if (this.proposalLetter.approverSignUrl != null) {
       this.plService.DownloadFile(this.proposalLetter.approverSignUrl).subscribe({
         next: (res) => {
-          console.log(res);
           const blob = new Blob([res], { type: mediaType });
           const blobURL = URL.createObjectURL(blob);
           this.signImage = this.sanitizer.bypassSecurityTrustUrl(blobURL) as string;
@@ -111,7 +111,6 @@ export class ViewPLComponent implements OnInit {
   sendBackToPreparer() {
     this.proposalLetter.plstatusId = this.plstatus.Preparing;
     this.proposalLetter.draft = false;
-    console.log(this.proposalLetter, "Sending back to Preparer");
     this.plService.updatePL(this.proposalLetter.id, this.proposalLetter).subscribe({
       next: (res: any) => {
         this.toastService.success("Proposal Letter Sent Back To Preparer");

@@ -64,10 +64,10 @@ export class RegistrationComponent {
 
   //On Button click event
   OnSubmit() {
-    this.http.post('http://localhost:5004/api/Registration', this.Registration).subscribe({
+    this.http.post('https://localhost:5005/api/Registration', this.Registration).subscribe({
       next: (res: any) => {
         this.toastService.success('User Registered Successfully');
-        this.router.navigate(['/Login']);
+        window.location.replace('Login');
       },
 
       error: (err: any) => {
